@@ -125,6 +125,76 @@
           }
         }
       }
+    },
+    "@ngez/autocomplete": {
+      "root": "projects/ngez/autocomplete",
+      "sourceRoot": "projects/ngez/autocomplete/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngez/autocomplete/tsconfig.lib.json",
+            "project": "projects/ngez/autocomplete/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngez/autocomplete/src/test.ts",
+            "tsConfig": "projects/ngez/autocomplete/tsconfig.spec.json",
+            "karmaConfig": "projects/ngez/autocomplete/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngez/autocomplete/tsconfig.lib.json",
+              "projects/ngez/autocomplete/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "@ngez/core": {
+      "root": "projects/ngez/core",
+      "sourceRoot": "projects/ngez/core/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngez/core/tsconfig.lib.json",
+            "project": "projects/ngez/core/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngez/core/src/test.ts",
+            "tsConfig": "projects/ngez/core/tsconfig.spec.json",
+            "karmaConfig": "projects/ngez/core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngez/core/tsconfig.lib.json",
+              "projects/ngez/core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngez"

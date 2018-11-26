@@ -1,0 +1,17 @@
+@import "../../variables";
+
+:host{
+    display:block;
+    padding: 12px;
+
+    &.active{
+        background-color: $primary;
+        color: white;
+    }
+
+    &:hover:not(.disabled){
+        background-color: $primary;
+        color: white;
+        cursor: pointer;
+    }
+}
