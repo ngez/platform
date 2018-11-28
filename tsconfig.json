@@ -17,12 +17,6 @@
       "dom"
     ],
     "paths": {
-      "@ngez/autocomplete": [
-        "dist/ngez/autocomplete"
-      ],
-      "@ngez/autocomplete/*": [
-        "dist/ngez/autocomplete/*"
-      ],
       "@ngez/core": [
         "dist/ngez/core"
       ],

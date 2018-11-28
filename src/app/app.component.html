@@ -1,9 +1,15 @@
 <form [formGroup]="form">
     <div class="container">
-        <input  formControlName="autocomplete" [ngezAutocomplete]="autocomplete" [config]="config" />
-        <ngez-autocomplete #autocomplete>
-            <ngez-option *ngFor="let option of options" [value]="option">{{option.name}}</ngez-option>
+        <input  formControlName="autocomplete" [ngezAutocomplete]="autocomplete" />
+        <ngez-autocomplete (opened)="onOpened()" (closed)="onClosed()" [config]="config" #autocomplete>
+            <ngez-option style="display: flex; flex-direction: row; align-items: center" *ngFor="let option of options" [value]="option">
+                <img [src]="option.avatar" height="30px" width="30px">
+                <div>
+                        {{option.username}}
+                </div>
+            </ngez-option>
         </ngez-autocomplete>
         <input />
     </div>
+    <pre>{{form.value | json}}</pre>
 </form>

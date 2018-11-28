@@ -18,7 +18,7 @@ export class NgEzOutsideDirective {
 
     constructor(
         private element: ElementRef,
-        @Optional() @Inject(DOCUMENT) private document: HTMLDocument) { }
+        @Optional() @Inject(DOCUMENT) private document: any) { }
 
     ngOnInit() {
         fromEvent<MouseEvent>(this.document, 'click')

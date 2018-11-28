@@ -16,11 +16,11 @@ import { Overlay, ConnectionPositionPair, OverlayRef } from '@angular/cdk/overla
 import { ComponentPortal, TemplatePortal } from "@angular/cdk/portal";
 import { NgEzAutocompleteComponent } from "./autocomplete.component";
 import { Subscription, merge, BehaviorSubject, ReplaySubject, of, fromEvent } from "rxjs";
-import { ESCAPE } from "@angular/cdk/keycodes";
+import { ESCAPE, DOWN_ARROW, UP_ARROW, TAB } from "@angular/cdk/keycodes";
 import { NgEzOptionComponent } from "../option";
 import { EventEmitter } from "protractor";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgEzAutocompleteConfig } from "./models";
+import { NgEzAutocompleteConfig, defaultConfig } from "./models";
 import { DOCUMENT } from "@angular/common";
 
 @Directive({
@@ -34,8 +34,6 @@ import { DOCUMENT } from "@angular/common";
 export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestroy {
 
     @Input('ngezAutocomplete') autocomplete: NgEzAutocompleteComponent;
-
-    @Input() config: NgEzAutocompleteConfig;
 
     private overlayRef: OverlayRef;
 
@@ -51,7 +49,7 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
         private element: ElementRef,
         private overlay: Overlay,
         private viewContainerRef: ViewContainerRef,
-        @Optional() @Inject(DOCUMENT) private document: HTMLDocument) { }
+        @Optional() @Inject(DOCUMENT) private document: any) { }
 
     ngOnDestroy() {
         this.overlayRef.dispose();
@@ -59,15 +57,31 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
     }
 
     @HostListener('input', ['$event'])
-    onValueChange(e) {
+    private onValueChange(e) {
         this.text$.next(this.element.nativeElement.value)
         this.open();
     }
 
-    @HostListener('keyup', ['$event'])
-    onKeyUp(e: KeyboardEvent) {
-        if (this.isVisible)
-            this.autocomplete.handleKeyUp(e);
+    @HostListener('keydown', ['$event'])
+    private onKeyDown(event: KeyboardEvent) {
+        const keyCode = event.keyCode;
+
+        if (keyCode === ESCAPE) {
+            event.preventDefault();
+        }
+
+        const prevActiveItem = this.autocomplete.keyboardEventsManager.activeItem;
+        const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
+
+        if (this.isVisible) {
+            this.autocomplete.handleKeyDown(event);
+            if (isArrowKey) {
+                this.scrollToOption();
+            }
+        }
+
+        else if (isArrowKey)
+            this.open();
     }
 
     open() {
@@ -84,23 +98,29 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
                 .withPush(true)
                 .withPositions(positions);
 
+        const { config, template } = this.autocomplete;
+
         this.overlayRef = this.overlay.create({
             disposeOnNavigation: true,
             hasBackdrop: false,
             scrollStrategy: this.overlay.scrollStrategies.close(),
             positionStrategy: positionStrategy,
-            width: this.element.nativeElement.offsetWidth
+            width: this.element.nativeElement.offsetWidth,
+            maxHeight: config && config.maxHeight 
+                ? config.maxHeight 
+                : defaultConfig.maxHeight 
         });
 
         const autocompletePortal =
-            new TemplatePortal(this.autocomplete.template, this.viewContainerRef);
+            new TemplatePortal(template, this.viewContainerRef);
 
         this.overlayRef.attach(autocompletePortal);
 
         this.subscription =
             this.getAutocompleteClosingActions().subscribe(event => {
                 this.setValueAndClose(event);
-            })
+            });
+        this.autocomplete.opened.emit();
     }
 
     close() {
@@ -132,9 +152,10 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
         this.element.nativeElement.disabled = isDisabled;
     }
 
-    setValue(value: any) {
-        const text = this.config && this.config.labelExtractor
-            ? this.config.labelExtractor(value)
+    private setValue(value: any) {
+        const { config } = this.autocomplete;
+        const text = value != null && config && config.labelExtractor
+            ? config.labelExtractor(value)
             : value;
 
         this.element.nativeElement.value = text;
@@ -144,10 +165,15 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
         return this.overlayRef ? this.overlayRef.hasAttached() : false;
     }
 
+    private scrollToOption(){
+        this.autocomplete.setScrollTop();
+    }
+
     private getAutocompleteClosingActions() {
         return merge(
             ...this.autocomplete.options.map(option => option.selected),
             this.getOutsideClickStream(),
+            this.autocomplete.keyboardEventsManager.tabOut,
             this.overlayRef.keydownEvents().pipe(filter(event => event.keyCode === ESCAPE))
         ).pipe(
             map(event => event instanceof NgEzOptionComponent ? event : null)

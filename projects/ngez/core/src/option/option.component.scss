@@ -2,8 +2,8 @@
 
 :host{
     display:block;
-    padding: 12px;
-
+    padding: 8px;
+    
     &.active{
         background-color: $primary;
         color: white;
