@@ -1,0 +1,124 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://www.google.com/design/spec/style/color.html
+$custom-primary: (
+    50 : #e0e2e5,
+    100 : #b3b6bf,
+    200 : #808594,
+    300 : #4d5469,
+    400 : #263049,
+    500 : #000b29,
+    600 : #000a24,
+    700 : #00081f,
+    800 : #000619,
+    900 : #00030f,
+    A100 : #5252ff,
+    A200 : #1f1fff,
+    A400 : #0000eb,
+    A700 : #0000d1,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$custom-accent: (
+    50 : #fae0e5,
+    100 : #f3b3be,
+    200 : #eb8093,
+    300 : #e34d67,
+    400 : #dd2647,
+    500 : #d70026,
+    600 : #d30022,
+    700 : #cd001c,
+    800 : #c70017,
+    900 : #be000d,
+    A100 : #ffe6e7,
+    A200 : #ffb3b5,
+    A400 : #ff8084,
+    A700 : #ff676b,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$custom-warn: (
+    50 : #fdf6e8,
+    100 : #faeac5,
+    200 : #f6dc9e,
+    300 : #f2cd77,
+    400 : #f0c35a,
+    500 : #edb83d,
+    600 : #ebb137,
+    700 : #e8a82f,
+    800 : #e5a027,
+    900 : #e0911a,
+    A100 : #ffffff,
+    A200 : #fff2e0,
+    A400 : #ffdcad,
+    A700 : #ffd194,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$app-primary: mat-palette($custom-primary);
+$app-accent:  mat-palette($custom-accent);
+
+// The warn palette is optional (defaults to red).
+$app-warn:    mat-palette($custom-warn);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($app-theme);

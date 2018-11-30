@@ -1,0 +1,29 @@
+<div fxLayout="column" class="app-container">
+    <mat-toolbar fxLayout="row" color="primary">
+        <button (click)="snav.toggle()" mat-icon-button>
+            <mat-icon aria-label="Menu button">menu</mat-icon>
+        </button>
+        NgEz
+    </mat-toolbar>
+
+    <mat-sidenav-container fxFlex>
+        <mat-sidenav opened #snav [mode]="mode$ | async">
+            <div class="sidenav-container">
+                <ngez-nested-nav>
+                    <ngez-nav-list title="Core">
+                        <a class="nav-list-item" routerLink="/core" routerLinkActive="active">Overview</a>
+                        <ngez-nav-list title="Components">
+                            <a class="nav-list-item" routerLink="/core/components/autocomplete" routerLinkActive="active">Autocomplete</a>
+                        </ngez-nav-list>
+                        <ngez-nav-list title="Directives">
+                            <a class="nav-list-item" routerLink="/core/directives/outside" routerLinkActive="active">Outside Click</a>
+                        </ngez-nav-list>
+                    </ngez-nav-list>
+                </ngez-nested-nav>
+            </div>
+        </mat-sidenav>
+        <mat-sidenav-content class="content-container">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

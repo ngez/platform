@@ -18,10 +18,10 @@
     ],
     "paths": {
       "@ngez/core": [
-        "dist/ngez/core"
+        "dist/core"
       ],
       "@ngez/core/*": [
-        "dist/ngez/core/*"
+        "dist/core/*"
       ]
     }
   }

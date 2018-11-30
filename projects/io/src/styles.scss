@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/cdk/overlay-prebuilt.css';
+
+html, body{
+    margin: 0;
+    height: 100%;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+a {
+    color: #333;
+}
+
+.app-container{
+    height: 100%;
+    min-height: 100%;
+}
+
+mat-sidenav.mat-sidenav {
+    min-width: 260px;
+    background-color: #fafafa;
+    box-shadow: 6px 0 6px rgba(0,0,0,.1);
+}
+
+.sidenav-container{
+    min-height: 100%;
+    background-color: #fafafa;
+    box-shadow: 6px 0 6px rgba(0,0,0,.1);
+    // background-color: #09203f !important
+}
+
+.content-container{
+    padding: 24px;
+}

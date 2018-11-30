@@ -3,9 +3,44 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngez": {
-      "root": "",
-      "sourceRoot": "src",
+    "core": {
+      "root": "projects/core",
+      "sourceRoot": "projects/core/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/core/tsconfig.lib.json",
+            "project": "projects/core/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/core/src/test.ts",
+            "tsConfig": "projects/core/tsconfig.spec.json",
+            "karmaConfig": "projects/core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/core/tsconfig.lib.json",
+              "projects/core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "io": {
+      "root": "projects/io/",
+      "sourceRoot": "projects/io/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {
@@ -17,17 +52,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngez",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "outputPath": "dist/io",
+            "index": "projects/io/src/index.html",
+            "main": "projects/io/src/main.ts",
+            "polyfills": "projects/io/src/polyfills.ts",
+            "tsConfig": "projects/io/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/io/src/favicon.ico",
+              "projects/io/src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/io/src/styles.scss",
+              "projects/io/src/theme.scss"
             ],
             "scripts": []
           },
@@ -35,8 +71,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/io/src/environments/environment.ts",
+                  "with": "projects/io/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -47,41 +83,48 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngez:build"
+            "browserTarget": "io:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngez:build:production"
+              "browserTarget": "io:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngez:build"
+            "browserTarget": "io:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "projects/io/src/test.ts",
+            "polyfills": "projects/io/src/polyfills.ts",
+            "tsConfig": "projects/io/tsconfig.spec.json",
+            "karmaConfig": "projects/io/karma.conf.js",
             "styles": [
-              "src/styles.scss"
+              "projects/io/src/styles.scss"
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/io/src/favicon.ico",
+              "projects/io/src/assets"
             ]
           }
         },
@@ -89,8 +132,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "projects/io/tsconfig.app.json",
+              "projects/io/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -99,61 +142,27 @@
         }
       }
     },
-    "ngez-e2e": {
-      "root": "e2e/",
+    "io-e2e": {
+      "root": "projects/io-e2e/",
       "projectType": "application",
+      "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngez:serve"
+            "protractorConfig": "projects/io-e2e/protractor.conf.js",
+            "devServerTarget": "io:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngez:serve:production"
+              "devServerTarget": "io:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "@ngez/core": {
-      "root": "projects/ngez/core",
-      "sourceRoot": "projects/ngez/core/src",
-      "projectType": "library",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/ngez/core/tsconfig.lib.json",
-            "project": "projects/ngez/core/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ngez/core/src/test.ts",
-            "tsConfig": "projects/ngez/core/tsconfig.spec.json",
-            "karmaConfig": "projects/ngez/core/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ngez/core/tsconfig.lib.json",
-              "projects/ngez/core/tsconfig.spec.json"
-            ],
+            "tsConfig": "projects/io-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
@@ -162,5 +171,5 @@
       }
     }
   },
-  "defaultProject": "ngez"
+  "defaultProject": "io"
 }
