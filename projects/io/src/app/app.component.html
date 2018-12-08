@@ -1,5 +1,5 @@
 <div fxLayout="column" class="app-container">
-    <mat-toolbar fxLayout="row" color="primary">
+    <mat-toolbar class="header" fxLayout="row" color="primary">
         <button (click)="snav.toggle()" mat-icon-button>
             <mat-icon aria-label="Menu button">menu</mat-icon>
         </button>
@@ -7,13 +7,13 @@
     </mat-toolbar>
 
     <mat-sidenav-container fxFlex>
-        <mat-sidenav opened #snav [mode]="mode$ | async">
+        <mat-sidenav fxLayout="row" opened #snav [mode]="mode$ | async">
             <div class="sidenav-container">
                 <ngez-nested-nav>
                     <ngez-nav-list title="Core">
-                        <a class="nav-list-item" routerLink="/core" routerLinkActive="active">Overview</a>
+                        <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">Overview</a>
                         <ngez-nav-list title="Components">
-                            <a class="nav-list-item" routerLink="/core/components/autocomplete" routerLinkActive="active">Autocomplete</a>
+                            <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active">Autocomplete</a>
                         </ngez-nav-list>
                         <ngez-nav-list title="Directives">
                             <a class="nav-list-item" routerLink="/core/directives/outside" routerLinkActive="active">Outside Click</a>
@@ -22,8 +22,17 @@
                 </ngez-nested-nav>
             </div>
         </mat-sidenav>
-        <mat-sidenav-content class="content-container">
-            <router-outlet></router-outlet>
+        <mat-sidenav-content fxLayout="column">
+            <div fxFlex fxLayout="column">
+                <div fxFlex="1 0 auto" class="content-container">
+                    <router-outlet></router-outlet>
+                </div>
+                <div fxLayout="row">
+                    <mat-toolbar style="height: auto; font-size: 14px; font-weight: normal" color="primary">
+                        Tested on Chrome, Firefox and IE11.
+                    </mat-toolbar>
+                </div>
+            </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

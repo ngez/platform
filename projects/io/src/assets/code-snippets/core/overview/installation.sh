@@ -1,0 +1,1 @@
+npm install @ngez/core --save

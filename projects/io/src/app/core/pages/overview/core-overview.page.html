@@ -1,1 +1,39 @@
-landing
+<h1>Core</h1>
+<p>
+    @ngez/core is a library for Angular applications, which consists of minimalistic components
+    which are fully customizable and easy to override with new styles. 
+    Useful if you don't want to be constrained by Material or Bootstrap's theme.
+    You take care of the view, we'll take care of the functionality.
+</p>
+<p>
+    Everything's tested on Chrome, Firefox and IE11.
+</p>
+<ngez-code-prettify [options]="options">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<p>
+    Core depends on the @angular/cdk, so install it if you haven't already.
+</p>
+<ngez-code-prettify [options]="options2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

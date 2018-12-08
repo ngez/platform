@@ -17,7 +17,7 @@ import { ComponentPortal, TemplatePortal } from "@angular/cdk/portal";
 import { NgEzAutocompleteComponent } from "./autocomplete.component";
 import { Subscription, merge, BehaviorSubject, ReplaySubject, of, fromEvent } from "rxjs";
 import { ESCAPE, DOWN_ARROW, UP_ARROW, TAB } from "@angular/cdk/keycodes";
-import { NgEzOptionComponent } from "../option";
+import { NgEzAutocompleteOptionComponent } from "./autocomplete-option.component";
 import { EventEmitter } from "protractor";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgEzAutocompleteConfig, defaultConfig } from "./models";
@@ -176,7 +176,7 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
             this.autocomplete.keyboardEventsManager.tabOut,
             this.overlayRef.keydownEvents().pipe(filter(event => event.keyCode === ESCAPE))
         ).pipe(
-            map(event => event instanceof NgEzOptionComponent ? event : null)
+            map(event => event instanceof NgEzAutocompleteOptionComponent ? event : null)
         );
     }
 
@@ -193,7 +193,7 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
             )
     }
 
-    private setValueAndClose(event: NgEzOptionComponent) {
+    private setValueAndClose(event: NgEzAutocompleteOptionComponent) {
         if (event) {
             this.element.nativeElement.focus();
             this.setValue(event.value);

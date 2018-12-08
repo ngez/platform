@@ -9,14 +9,28 @@ html, body{
     color: #333;
 }
 
+p {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 a {
     color: #333;
 }
 
 .app-container{
     height: 100%;
-    min-height: 100%;
 }
+
+mat-toolbar.header {
+    z-index: 10;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+}
+
+mat-toolbar.footer {
+    background-color: red;
+}
+
 
 mat-sidenav.mat-sidenav {
     min-width: 260px;
@@ -26,11 +40,15 @@ mat-sidenav.mat-sidenav {
 
 .sidenav-container{
     min-height: 100%;
-    background-color: #fafafa;
+    // background-color: #F8F5F2;
     box-shadow: 6px 0 6px rgba(0,0,0,.1);
     // background-color: #09203f !important
 }
 
 .content-container{
     padding: 24px;
+    
+    // overflow-y: auto;
 }
+
+

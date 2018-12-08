@@ -11,7 +11,7 @@ import {
   Input
 } from '@angular/core';
 import { ActiveDescendantKeyManager } from "@angular/cdk/a11y";
-import { NgEzOptionComponent } from '../option';
+import { NgEzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { UP_ARROW, DOWN_ARROW, ENTER, TAB } from '@angular/cdk/keycodes';
 import { merge, Subscription, Observable } from 'rxjs';
 import { NgEzAutocompleteConfig, defaultConfig } from "./models";
@@ -38,21 +38,13 @@ export class NgEzAutocompleteComponent {
 
   @ViewChild('panel') panel: ElementRef;
 
-  @ContentChildren(NgEzOptionComponent, { descendants: true }) options: QueryList<NgEzOptionComponent>;
+  @ContentChildren(NgEzAutocompleteOptionComponent, { descendants: true }) options: QueryList<NgEzAutocompleteOptionComponent>;
 
-  keyboardEventsManager: ActiveDescendantKeyManager<NgEzOptionComponent>;
+  keyboardEventsManager: ActiveDescendantKeyManager<NgEzAutocompleteOptionComponent>;
 
   subscription: Subscription;
 
   optionEventEmitters: Observable<EventEmitter<{}>>;
-
-  constructor() {
-
-  }
-
-  ngOnInit() {
-    //this.options.changes.subscribe(change => console.log(change))
-  }
 
   ngAfterViewInit() {
     this.keyboardEventsManager =
@@ -78,24 +70,7 @@ export class NgEzAutocompleteComponent {
     }
   }
 
-  xgetScrollTop(){
-    const index = this.keyboardEventsManager.activeItemIndex;
-    const option = this.keyboardEventsManager.activeItem;
-    const offsetHeight =
-      this.options.toArray().slice(0, index).reduce((offset, option) => offset + option.getOffsetHeight(), 0);
-    const { top, bottom, height } = option.getBoundingClientRect();
-    const currentScrollPosition = this.panel.nativeElement.scrollTop;
-    const panelHeight = this.panel.nativeElement.offsetHeight;
-    console.log({top, bottom, height, offsetHeight: option.getOffsetHeight() }, this.panel.nativeElement.scrollTop)
-    if(top < currentScrollPosition)
-      return offsetHeight;
-    else if(bottom > currentScrollPosition)
-      return offsetHeight + option.getOffsetHeight();
-    return currentScrollPosition
-  }
-
   getScrollTop() {
-    // this.getBoundingClientRect()
     const index = this.keyboardEventsManager.activeItemIndex;
     const option = this.keyboardEventsManager.activeItem;
     const offset =
@@ -108,19 +83,10 @@ export class NgEzAutocompleteComponent {
     const optionHeight = option.getOffsetHeight();
     
     const panelHeight = this.panel.nativeElement.getBoundingClientRect().height;
-    // console.log(panelHeight)
     
-    if(offset > currentScrollPosition + panelHeight){
-      // console.log(currentScrollPosition)
-      // console.log(offset, currentScrollPosition + panelHeight)
-      // console.log(offset - panelHeight)
-      return Math.max(0, offset - panelHeight)
-      // return Math.ceil(offset - panelHeight);
-    }
-      
-    // if (offset + optionHeight > currentScrollPosition + panelHeight)
-    //   return Math.max(0, offset - panelHeight + optionHeight);
-    
+    if(offset > currentScrollPosition + panelHeight)
+      return Math.max(0, offset - panelHeight);
+
     return currentScrollPosition;
   }
 
@@ -129,8 +95,8 @@ export class NgEzAutocompleteComponent {
       return;
 
     const scrollTop = this.getScrollTop();
-    // console.log(scrollTop)
-      this.panel.nativeElement.scrollTop = scrollTop;
+
+    this.panel.nativeElement.scrollTop = scrollTop;
   }
 
 }

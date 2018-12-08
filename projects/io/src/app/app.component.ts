@@ -8,7 +8,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import * as faker from 'faker';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
-import { DocumentService } from './shared/services/document.service';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +20,7 @@ export class AppComponent {
 
   isVisible = false
 
-  constructor(public media: ObservableMedia, private documentService: DocumentService) {
-    this.documentService.get().subscribe(text => console.log(text))
-  }
+  constructor(public media: ObservableMedia) {}
 
   // form: FormGroup;
 

@@ -1,0 +1,289 @@
+@import "../../variables";
+
+ngez-code-prettify{
+    display: block; 
+}
+.ngez-code-prettify{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.ngez-code-prettify-content-container{
+    &:hover .ngez-copy-button{
+        display: inline-block;
+    }
+}
+
+
+.ngez-code-prettify-content{
+    overflow: auto;
+    padding: 12px;
+}
+
+
+.ngez-copy-container{
+    
+    z-index: 2;
+    position: absolute;
+    top: 5px;
+    right: 16px;
+
+    .ngez-copy-button{
+        outline:none;
+        display: none;
+        border: none;
+        background-color: transparent;
+        margin: 0;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        transition: background 250ms ease-in-out, 
+                    transform 150ms ease;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+}
+
+
+ol.linenums {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #aeaeae;
+
+    li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8, li.L9 {
+        list-style-type: decimal;
+        background-color: inherit;
+    }
+}
+
+.light {
+
+    .ngez-copy-button:hover{
+        color: $primary;
+    }
+
+    .ngez-code-prettify-header{
+        background-color: $primary;
+        color: white;
+        padding: 10px;
+    }
+
+    .ngez-code-prettify-content{
+        // border: .5px solid #dbdbdb;
+        background-color: rgba(241,241,241,.2);
+        
+    }
+
+    .ngez-copy-button{
+        color: rgb(30, 30, 30);
+    }
+
+    .ngez-code-prettify{
+        background-color: rgba(241,241,241,.2);
+    
+        /* string content */
+    
+        .str {
+            color: #183691;
+        }
+    
+        /* keyword */
+    
+        .kwd {
+            color: #a71d5d;
+        }
+    
+        /* comment */
+    
+        .com {
+            color: #969896;
+        }
+    
+        /* type name */
+    
+        .typ {
+            color: #0086b3;
+        }
+    
+        /* literal value */
+    
+        .lit {
+            color: #0086b3;
+        }
+    
+        /* punctuation */
+    
+        .pun {
+            color: #333;
+        }
+    
+        /* lisp open bracket */
+    
+        .opn {
+            color: #333;
+        }
+    
+        /* lisp close bracket */
+    
+        .clo {
+            color: #333;
+        }
+    
+        /* markup tag name */
+    
+        .tag {
+            color: #000080;
+        }
+    
+        /* markup attribute name */
+    
+        .atn {
+            color: #795da3;
+        }
+    
+        /* markup attribute value */
+    
+        .atv {
+            color: #183691;
+        }
+    
+        /* declaration */
+    
+        .dec {
+            color: #333;
+        }
+    
+        /* variable name */
+    
+        .var {
+            color: #008080;
+        }
+    
+        /* function name */
+    
+        .fun {
+            color: #900;
+        }
+    }
+}
+
+.dark {
+
+    .ngez-copy-button:hover{
+        color: $accent;
+    }
+
+    .ngez-code-prettify-header{
+        background-color: $accent;
+        color: white;
+        padding: 10px;
+    }
+
+    .ngez-code-prettify-content{
+        border: 0;
+        background-color: rgb(30, 30, 30);
+        
+    }
+
+    .ngez-copy-button{
+        color: white;
+    }
+
+    .ngez-code-prettify{
+        background-color: rgb(30, 30, 30);
+    
+        &.nocode {
+            color: white;
+        }
+    
+        /* string content */
+    
+        .str {
+            color: #b5bd68;
+        }
+    
+        /* keyword */
+    
+        .kwd {
+            color: #b294bb;
+        }
+    
+        /* plaintext */
+    
+        .pln {
+            color: #fff;
+        }
+    
+        /* comment */
+    
+        .com {
+            color: #969896;
+        }
+    
+        /* type name */
+    
+        .typ {
+            color: #81a2be;
+        }
+    
+        /* literal value */
+    
+        .lit {
+            color: #de935f;
+        }
+    
+        /* punctuation */
+    
+        .pun {
+            color: #c5c8c6;
+        }
+    
+        /* lisp open bracket */
+    
+        .opn {
+            color: #c5c8c6;
+        }
+    
+        /* lisp close bracket */
+    
+        .clo {
+            color: #c5c8c6;
+        }
+    
+        /* markup tag name */
+    
+        .tag {
+            color: #cc6666;
+        }
+    
+        /* markup attribute name */
+    
+        .atn {
+            color: #de935f;
+        }
+    
+        /* markup attribute value */
+    
+        .atv {
+            color: #8abeb7;
+        }
+    
+        /* declaration */
+    
+        .dec {
+            color: #de935f;
+        }
+    
+        /* variable name */
+    
+        .var {
+            color: #cc6666;
+        }
+    
+        /* function name */
+    
+        .fun {
+            color: #81a2be;
+        }
+    }
+}

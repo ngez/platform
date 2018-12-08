@@ -2,17 +2,15 @@ import { NgModule } from '@angular/core';
 import { NgEzAutocompleteComponent } from './autocomplete.component';
 import { NgEzAutocompleteDirective } from './autocomplete.directive';
 import { Overlay } from '@angular/cdk/overlay';
-import { NgEzOptionModule } from '../option';
+import { NgEzAutocompleteOptionComponent } from './autocomplete-option.component';
 
 @NgModule({
   declarations: [
     NgEzAutocompleteComponent, 
-    NgEzAutocompleteDirective
+    NgEzAutocompleteDirective,
+    NgEzAutocompleteOptionComponent
   ],
-  imports: [
-    NgEzOptionModule
-  ],
-  exports: [NgEzAutocompleteComponent, NgEzAutocompleteDirective, NgEzOptionModule],
+  exports: [NgEzAutocompleteComponent, NgEzAutocompleteDirective, NgEzAutocompleteOptionComponent],
   entryComponents: [NgEzAutocompleteComponent],
   providers: [Overlay]
 })

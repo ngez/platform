@@ -6,6 +6,7 @@
   },
   "exclude": [
     "test.ts",
+    "src/assets/*",
     "**/*.spec.ts"
   ]
 }

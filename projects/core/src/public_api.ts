@@ -4,3 +4,5 @@
 
 export * from './autocomplete';
 export * from './outside';
+export * from './code-prettify';
+export * from './copy-clipboard';

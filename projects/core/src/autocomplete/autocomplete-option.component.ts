@@ -9,11 +9,11 @@ import {
 import { Highlightable } from "@angular/cdk/a11y";
 
 @Component({
-    selector: 'ngez-option',
-    templateUrl: './option.component.html',
-    styleUrls: ['./option.component.scss']
+    selector: 'ngez-autocomplete-option',
+    templateUrl: './autocomplete-option.component.html',
+    styleUrls: ['./autocomplete-option.component.scss']
 })
-export class NgEzOptionComponent implements Highlightable {
+export class NgEzAutocompleteOptionComponent implements Highlightable {
 
     @Input() value: any;
 
@@ -39,23 +39,8 @@ export class NgEzOptionComponent implements Highlightable {
             this.selected.emit(this);
     }
 
-    getOffsetTop(){
-        const element = this.element.nativeElement as HTMLElement;
-        return element.offsetTop;
-    }
-
     getOffsetHeight(){
         const element = this.element.nativeElement as HTMLElement;
         return element.getBoundingClientRect().height;
-    }
-
-    scrollIntoView(scroll){
-        const element = this.element.nativeElement as HTMLElement;
-        element.scrollIntoView(scroll);
-    }
-
-    getBoundingClientRect(){
-        const element = this.element.nativeElement as HTMLElement;
-        return element.getBoundingClientRect();
     }
 }
