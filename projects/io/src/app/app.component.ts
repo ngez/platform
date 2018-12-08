@@ -2,12 +2,14 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 // import { 
 //   NgEzAutocompleteDirective, 
 //   NgEzAutocompleteConfig } from 'projects/ngez/core/src/public_api';
-import { NgEzAutocompleteConfig, NgEzAutocompleteDirective} from '@ngez/core'
-import { debounceTime, map } from 'rxjs/operators';
+import { NgEzAutocompleteConfig, NgEzAutocompleteDirective } from '@ngez/core'
+import { debounceTime, map, tap, filter, switchMap } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as faker from 'faker';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
+import { MatSidenav } from '@angular/material/sidenav';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +18,15 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
 
+  @ViewChild(MatSidenav) snav: MatSidenav;
+
   mode$: Observable<'side' | 'over'>;
 
-  isVisible = false
+  routerLinkOptions = {
+    exact: true
+  };
 
-  constructor(public media: ObservableMedia) {}
+  constructor(public media: ObservableMedia, private router: Router) { }
 
   // form: FormGroup;
 
@@ -39,12 +45,20 @@ export class AppComponent {
   //   })
   // }
 
-  ngOnInit(){
+  ngOnInit() {
     this.mode$ = this.media.asObservable().pipe(
       map(() => this.media.isActive('gt-sm') ? 'side' : 'over')
     );
-    
-    //setInterval(() => this.setOptions(), 3000)
+
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(e => {
+        const isLarge = this.media.isActive('gt-sm');
+        if (isLarge && !this.snav.opened)
+          this.snav.open();
+        if (!isLarge && this.snav.opened)
+          this.snav.close();
+      });
   }
 
   // setOptions(){

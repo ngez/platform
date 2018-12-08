@@ -7,13 +7,13 @@
     </mat-toolbar>
 
     <mat-sidenav-container fxFlex>
-        <mat-sidenav fxLayout="row" opened #snav [mode]="mode$ | async">
+        <mat-sidenav fxLayout="row" #snav [mode]="mode$ | async">
             <div class="sidenav-container">
                 <ngez-nested-nav>
                     <ngez-nav-list title="Core">
-                        <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">Overview</a>
+                        <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="routerLinkOptions" routerLinkActive="active">Overview</a>
                         <ngez-nav-list title="Components">
-                            <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active">Autocomplete</a>
+                            <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Autocomplete</a>
                         </ngez-nav-list>
                         <ngez-nav-list title="Directives">
                             <a class="nav-list-item" routerLink="/core/directives/outside" routerLinkActive="active">Outside Click</a>

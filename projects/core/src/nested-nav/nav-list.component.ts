@@ -49,9 +49,9 @@ export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit
 
     ngAfterContentInit() {
         this.linksQueryListChangesSubscription = 
-            this.links.changes.subscribe((c) => (console.log(c),this.update()));
+            this.links.changes.subscribe((c) => this.update());
         this.linksWithHrefsQueryListChangesSubscription = 
-            this.linksWithHrefs.changes.subscribe((c) => (console.log(c),this.update()));
+            this.linksWithHrefs.changes.subscribe((c) => this.update());
         this.update();
     }
 
@@ -65,10 +65,12 @@ export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit
     }
 
     private update(){
-        if(this.open || !this.links || !this.linksWithHrefs || !this.router.navigated)
+        if(!this.links || !this.linksWithHrefs || !this.router.navigated)
             return;
         this.active = this.hasActiveLinks();
-        this.open = this.active;
+
+        if(!this.open)
+            this.open = this.active;
     }
 
     private isLinkActive(router: Router): (link: (RouterLink | RouterLinkWithHref)) => boolean {
