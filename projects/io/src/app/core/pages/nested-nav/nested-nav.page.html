@@ -1,0 +1,72 @@
+<h1 class="mat-headline">Nested Nav</h1>
+<p class="mat-body">
+    Nest your router links in lists which can be collapsed and expanded.
+</p>
+<h2 class="mat-title">Features</h2>
+<ul>
+    <li>Easily apply styling to active links.</li>
+    <li>Nest router links which can be expanded and collapsed.</li>
+    <li>Nav lists will automatically expand when navigating to a child route.</li>
+</ul>
+<h2 class="mat-title">Demo</h2>
+<ngez-nested-nav>
+    <ngez-nav-list title="Core">
+        <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="routerLinkOptions" routerLinkActive="active">Overview</a>
+        <ngez-nav-list title="Components">
+            <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Autocomplete</a>
+            <a class="nav-list-item" routerLink="/core/nested-nav" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Nested Nav</a>
+        </ngez-nav-list>
+        <ngez-nav-list title="Directives">
+            <a class="nav-list-item" routerLink="/core/outside" routerLinkActive="active">Outside Click</a>
+        </ngez-nav-list>
+    </ngez-nav-list>
+</ngez-nested-nav>
+<h2 class="mat-title">Usage</h2>
+<p class="mat-body">
+    Begin by importing the module like this:
+</p>
+<pre>
+    import {{'{'}} NgEzNestedNavModule {{'}'}} from '@ngez/core';
+</pre>
+<ngez-code-prettify [options]="code1">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<br>
+<ngez-code-prettify [options]="code2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<h2 class="mat-title">Styling</h2>
+<p class="mat-body">By default when a router link is active or being hovered, it'll have a light background, this can easily be changed:</p>
+<ngez-code-prettify [options]="code3">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

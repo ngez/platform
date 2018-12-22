@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, AfterViewInit, ViewChild } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { NgEzAutocompleteDirective, NgEzAutocompleteConfig } from "@ngez/core";
 
@@ -6,7 +6,7 @@ import { NgEzAutocompleteDirective, NgEzAutocompleteConfig } from "@ngez/core";
     selector: 'app',
     templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements AfterViewInit{
 
     form: FormGroup;
 
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
         }
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
         //Assuming you need the actual input text
         this.autocomplete.text$.subscribe(text => {
             //Perform custom filtering or http call.

@@ -7,6 +7,9 @@ const routes: Routes = [{
 }, {
     path: 'autocomplete',
     loadChildren: './pages/autocomplete/autocomplete.module#AutocompleteModule'
+}, {
+    path: 'nested-nav',
+    loadChildren: './pages/nested-nav/nested-nav.module#NestedNavModule'
 }];
 
 @NgModule({

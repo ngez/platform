@@ -1,27 +1,25 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AutocompletePage } from "./autocomplete.page";
+import { NestedNavPage } from "./nested-nav.page";
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { NgEzAutocompleteModule } from "@ngez/core";
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
 import { NgEzCodePrettifyModule } from '@ngez/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgEzNestedNavModule } from '@ngez/core';
 
 const routes : Routes = [{
     path: '',
-    component: AutocompletePage
+    component: NestedNavPage
 }];
 
 @NgModule({
     imports: [
         NgEzCodePrettifyModule,
         MatProgressSpinnerModule,
-        FlexLayoutModule, 
-        ReactiveFormsModule, 
-        RouterModule.forChild(routes), 
-        NgEzAutocompleteModule, 
-        CommonModule],
-    declarations: [AutocompletePage]
+        FlexLayoutModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        NgEzNestedNavModule],
+    declarations: [NestedNavPage]
 })
-export class AutocompleteModule{}
+export class NestedNavModule{}

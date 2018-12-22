@@ -13,14 +13,14 @@
 <form [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
     <div fxLayout="column">
         <label>Default input</label>
-        <input formControlName="c1" type="text" [ngezAutocomplete]="autocomplete">
+        <input formControlName="c1" type="text" [ngezAutocomplete]="ngezAutocomplete">
     </div>
     <div fxLayout="column">
         <label>Bootstrap input</label>
-        <input style="width: auto;" class="form-control" formControlName="c1" type="text" [ngezAutocomplete]="autocomplete" >
+        <input style="width: auto;" class="form-control" formControlName="c1" type="text" [ngezAutocomplete]="ngezAutocomplete" >
     </div>
 </form>
-<ngez-autocomplete [config]="config" #autocomplete>
+<ngez-autocomplete [config]="config" #ngezAutocomplete>
     <ngez-autocomplete-option [value]="option" *ngFor="let option of options1">
         <div fxLayout="row" fxLayoutAlign="start center">
             <img height="30" width="30" [src]="option.avatar" alt="Avatar">

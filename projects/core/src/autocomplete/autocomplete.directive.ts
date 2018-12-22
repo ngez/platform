@@ -36,19 +36,19 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
 
     @Input('ngezAutocomplete') autocomplete: NgEzAutocompleteComponent;
 
-    private overlayRef: OverlayRef;
-
-    private subscription: Subscription;
-
     text$ = new ReplaySubject<string>(1);
-
-    private onChange: Function;
-
-    private onTouched: Function;
 
     isOpen = false;
 
-    isDisabled = false;
+    private isDisabled = false;
+
+    private onTouched: Function;
+
+    private onChange: Function;
+
+    private overlayRef: OverlayRef;
+
+    private subscription: Subscription;
 
     constructor(
         private element: ElementRef,

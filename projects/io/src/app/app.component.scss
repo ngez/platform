@@ -2,24 +2,5 @@
 // @import '../../dist/ngez/core/variables';
 
 a.nav-list-item{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: none;
-    background-color: transparent;
-    padding: 6px;
-    text-decoration: none;
-    cursor: pointer;
     
-    &.active {
-        // color: $accent;
-        color: #D70026;
-    }
-
-    &:hover {
-        background-color: #f2f2f2;
-        // color: $accent;
-        color: #D70026;
-        text-shadow: 0 0 5px #fff;
-    }
 }

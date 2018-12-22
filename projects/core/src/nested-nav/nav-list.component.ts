@@ -1,4 +1,4 @@
-import { Component, Input, ContentChildren, QueryList, AfterContentInit, OnInit, OnDestroy, OnChanges } from "@angular/core";
+import { Component, Input, ContentChildren, QueryList, AfterContentInit, OnInit, OnDestroy, OnChanges, ViewEncapsulation } from "@angular/core";
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink, RouterLinkWithHref, Router, NavigationEnd } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -7,7 +7,8 @@ import { filter } from "rxjs/operators";
 @Component({
     selector: 'ngez-nav-list',
     templateUrl: './nav-list.component.html',
-    styleUrls: ['./nav-list.component.scss']
+    styleUrls: ['./nav-list.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit, OnDestroy {
 
@@ -58,6 +59,10 @@ export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit
     ngOnDestroy() {
         if(this.navigationSubscription)
             this.navigationSubscription.unsubscribe();
+        if(this.linksQueryListChangesSubscription)
+            this.linksQueryListChangesSubscription.unsubscribe();
+        if(this.linksWithHrefsQueryListChangesSubscription)
+            this.linksWithHrefsQueryListChangesSubscription.unsubscribe();
     }
 
     onToggle() {
@@ -75,11 +80,15 @@ export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit
 
     private isLinkActive(router: Router): (link: (RouterLink | RouterLinkWithHref)) => boolean {
         return (link: RouterLink | RouterLinkWithHref) =>
-            router.isActive(link.urlTree, this.routerLinkActiveOptions.exact);
+            router.isActive(link.urlTree, this.exact);
     }
 
     private hasActiveLinks(): boolean {
         return this.links.some(this.isLinkActive(this.router)) ||
             this.linksWithHrefs.some(this.isLinkActive(this.router));
+    }
+
+    private get exact(): boolean {
+        return this.routerLinkActiveOptions ? this.routerLinkActiveOptions.exact : false;
     }
 }

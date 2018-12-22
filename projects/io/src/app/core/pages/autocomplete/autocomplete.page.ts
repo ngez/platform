@@ -1,7 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import * as faker from 'faker';
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { NgEzAutocompleteConfig, NgEzCodePrettifyOptions } from "@ngez/core";
+import { NgEzAutocompleteConfig, NgEzCodePrettifyOptions, NgEzAutocompleteDirective } from "@ngez/core";
 
 @Component({
     selector: 'autocomplete',
@@ -9,10 +9,11 @@ import { NgEzAutocompleteConfig, NgEzCodePrettifyOptions } from "@ngez/core";
 })
 export class AutocompletePage {
 
+    @ViewChild(NgEzAutocompleteDirective) autocomplete: NgEzAutocompleteDirective;
+
     form: FormGroup;
 
     config: NgEzAutocompleteConfig = {
-        
         labelExtractor: option => option.username
     }
 
@@ -58,6 +59,7 @@ export class AutocompletePage {
 
     ngOnInit(){
         this.options1 = this.setOptions();
+        
     }
 
     setOptions() {

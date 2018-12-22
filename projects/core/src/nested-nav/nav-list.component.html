@@ -1,9 +1,9 @@
-<div>
+<div class="ngez-nav-list">
     <button (click)="onToggle()" class="ngez-nav-list-header" [class.active]="active">
         <span>{{title}}</span>
         <fa-icon [icon]="open ? faAngleUp : faAngleDown"></fa-icon>
     </button>
-    <div *ngIf="open" class="ngez-nav-list">
+    <div *ngIf="open" class="ngez-nav-list-content">
         <ng-content></ng-content>
     </div>
 </div>

@@ -1,19 +1,11 @@
 @import "../../variables";
 
-:host{
-    display: block;
-
-    div{
-        display: flex;
-        flex-direction: column;
-    }
+.ngez-nav-list{
+    display: flex;
+    flex-direction: column;
 }
 
-div.ngez-nav-list{
-    padding-left: 18px;
-}
-
-button.ngez-nav-list-header {
+.ngez-nav-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -24,7 +16,6 @@ button.ngez-nav-list-header {
     padding-top: 8px;
     padding-bottom: 10px;
     cursor: pointer;
-    // border-bottom: solid 1px rgba(0, 0, 0, 0.12);
     outline:none;
     
     &.active {
@@ -32,7 +23,31 @@ button.ngez-nav-list-header {
     }
 
     &:hover {
+        color: $accent;
         background-color: #f2f2f2;
-        text-shadow: 0 0 5px #fff;
+    }
+}
+
+.ngez-nav-list-content{
+    padding-left: 18px;
+
+    & a{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border: none;
+        background-color: transparent;
+        padding: 6px;
+        text-decoration: none;
+        cursor: pointer;
+        
+        &.active {
+            color: $accent;
+        }
+
+        &:hover {
+            background-color: #f2f2f2;
+            color: $accent;
+        }
     }
 }

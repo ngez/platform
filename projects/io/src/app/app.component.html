@@ -14,6 +14,7 @@
                         <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="routerLinkOptions" routerLinkActive="active">Overview</a>
                         <ngez-nav-list title="Components">
                             <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Autocomplete</a>
+                            <a class="nav-list-item" routerLink="/core/nested-nav" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Nested Nav</a>
                         </ngez-nav-list>
                         <ngez-nav-list title="Directives">
                             <a class="nav-list-item" routerLink="/core/directives/outside" routerLinkActive="active">Outside Click</a>
@@ -27,11 +28,11 @@
                 <div fxFlex="1 0 auto" class="content-container">
                     <router-outlet></router-outlet>
                 </div>
-                <div fxLayout="row">
+                <!-- <div fxLayout="row">
                     <mat-toolbar style="height: auto; font-size: 14px; font-weight: normal" color="primary">
                         Tested on Chrome, Firefox and IE11.
                     </mat-toolbar>
-                </div>
+                </div> -->
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>
