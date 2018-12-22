@@ -1,0 +1,46 @@
+<h1 class="mat-headline">Outside Click</h1>
+<p class="mat-body">
+    Receive an event whenever a click outside of the specified element occurs.
+</p>
+<h2 class="mat-title">Demo</h2>
+<div fxLayout="row" fxLayoutAlign="center center">
+    <div ngezOutside (outsideClick)="onOutsideClick()" fxLayout="column" fxLayoutAlign="center center" style="width: 200px; height: 200px; background-color: aquamarine">
+        <span>Click outside</span>
+        <span>Clicks: {{clicks}}</span>
+    </div>
+</div>
+<h2 class="mat-title">Import</h2>
+<p class="mat-body">
+    Begin by importing the module like this:
+</p>
+<pre>
+    import {{'{'}} NgEzOutsideModule {{'}'}} from '@ngez/core';
+</pre>
+<h2 class="mat-title">Usage</h2>
+<ngez-code-prettify [config]="config1">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<br>
+<ngez-code-prettify [config]="config2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

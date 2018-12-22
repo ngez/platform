@@ -1,14 +1,18 @@
-import { Directive, ElementRef, Optional, Inject, Input } from "@angular/core";
-import { fromEvent } from "rxjs";
+import { Directive, ElementRef, Optional, Inject, Input, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
+import { fromEvent, Subscription } from "rxjs";
 import { DOCUMENT } from "@angular/common";
 import { filter } from "rxjs/operators";
 
 @Directive({
     selector: '[ngezOutside]'
 })
-export class NgEzOutsideDirective {
+export class NgEzOutsideDirective implements OnInit, OnDestroy {
 
-    private _elements: HTMLElement[]
+    @Output() outsideClick = new EventEmitter<MouseEvent>();
+
+    private _elements: HTMLElement[];
+
+    private subscription: Subscription;
 
     @Input() set ignore(elements: HTMLElement | HTMLElement[]) {
         this._elements = Array.isArray(elements)
@@ -21,17 +25,19 @@ export class NgEzOutsideDirective {
         @Optional() @Inject(DOCUMENT) private document: any) { }
 
     ngOnInit() {
-        fromEvent<MouseEvent>(this.document, 'click')
+        this.subscription = fromEvent<MouseEvent>(this.document, 'click')
             .pipe(
                 filter(event => {
                     const clickTarget = event.target as HTMLElement;
-                    return clickTarget !== this.element.nativeElement && 
+                    return clickTarget !== this.element.nativeElement &&
                         (this._elements ? this._elements.every(element => element != clickTarget && !element.contains(clickTarget)) : true);
                 })
             )
-            .subscribe(event => {
-                console.log(event)
+            .subscribe(event => this.outsideClick.emit(event));
+    }
 
-            })
+    ngOnDestroy() {
+        if(this.subscription)
+            this.subscription.unsubscribe();
     }
 }

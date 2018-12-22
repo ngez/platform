@@ -13,6 +13,9 @@ const routes: Routes = [{
 }, {
     path: 'code-prettify',
     loadChildren: './pages/code-prettify/code-prettify.module#CodePrettifyModule'
+}, {
+    path: 'outside',
+    loadChildren: './pages/outside/outside.module#OutsideModule'
 }];
 
 @NgModule({
