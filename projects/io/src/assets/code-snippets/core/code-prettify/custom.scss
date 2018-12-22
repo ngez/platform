@@ -1,0 +1,107 @@
+.custom-theme {
+
+    .ngez-copy-button:hover{
+        color: #000b29;
+    }
+
+    .ngez-code-prettify-header{
+        background-color: #000b29;
+        color: white;
+    }
+
+    .ngez-code-prettify-content{
+        background-color: rgba(241,241,241,.2);
+    }
+
+    .ngez-copy-button{
+        color: rgb(30, 30, 30);
+    }
+
+    .ngez-code-prettify{
+        background-color: rgba(241,241,241,.2);
+    
+        /* string content */
+    
+        .str {
+            color: #183691;
+        }
+    
+        /* keyword */
+    
+        .kwd {
+            color: #a71d5d;
+        }
+    
+        /* comment */
+    
+        .com {
+            color: #969896;
+        }
+    
+        /* type name */
+    
+        .typ {
+            color: #0086b3;
+        }
+    
+        /* literal value */
+    
+        .lit {
+            color: #0086b3;
+        }
+    
+        /* punctuation */
+    
+        .pun {
+            color: #333;
+        }
+    
+        /* lisp open bracket */
+    
+        .opn {
+            color: #333;
+        }
+    
+        /* lisp close bracket */
+    
+        .clo {
+            color: #333;
+        }
+    
+        /* markup tag name */
+    
+        .tag {
+            color: #000080;
+        }
+    
+        /* markup attribute name */
+    
+        .atn {
+            color: #795da3;
+        }
+    
+        /* markup attribute value */
+    
+        .atv {
+            color: #183691;
+        }
+    
+        /* declaration */
+    
+        .dec {
+            color: #333;
+        }
+    
+        /* variable name */
+    
+        .var {
+            color: #008080;
+        }
+    
+        /* function name */
+    
+        .fun {
+            color: #900;
+        }
+    }
+}

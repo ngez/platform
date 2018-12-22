@@ -1,7 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import * as faker from 'faker';
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { NgEzAutocompleteConfig, NgEzCodePrettifyOptions, NgEzAutocompleteDirective } from "@ngez/core";
+import { NgEzAutocompleteConfig, NgEzCodePrettifyConfig, NgEzAutocompleteDirective } from "@ngez/core";
 
 @Component({
     selector: 'autocomplete',
@@ -19,7 +19,7 @@ export class AutocompletePage {
 
     options1;
 
-    code1: NgEzCodePrettifyOptions = {
+    code1: NgEzCodePrettifyConfig = {
         language: 'scss',
         path: 'assets/code-snippets/core/autocomplete/styles.scss',
         theme: 'dark',
@@ -27,7 +27,7 @@ export class AutocompletePage {
         header: 'styles.scss'
     };
 
-    code2: NgEzCodePrettifyOptions = {
+    code2: NgEzCodePrettifyConfig = {
         language: 'html',
         path: 'assets/code-snippets/core/autocomplete/app.component.html',
         theme: 'dark',
@@ -35,7 +35,7 @@ export class AutocompletePage {
         header: 'app.component.html'
     };
 
-    code3: NgEzCodePrettifyOptions = {
+    code3: NgEzCodePrettifyConfig = {
         language: 'typescript',
         path: 'assets/code-snippets/core/autocomplete/app.component.ts',
         theme: 'dark',
@@ -43,7 +43,7 @@ export class AutocompletePage {
         header: 'app.component.ts'
     };
 
-    code4: NgEzCodePrettifyOptions = {
+    code4: NgEzCodePrettifyConfig = {
         language: 'css',
         path: 'assets/code-snippets/core/autocomplete/custom.scss',
         theme: 'dark',

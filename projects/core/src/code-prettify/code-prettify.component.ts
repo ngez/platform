@@ -19,7 +19,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { NgEzCodeLoadingComponent } from "./code-loading.component";
 import { NgEzCodeLoadingErrorComponent } from "./code-loading-error.component";
 import { Observable, of, Subscription } from "rxjs";
-import { NgEzCodePrettifyOptions } from "./models";
+import { NgEzCodePrettifyConfig } from "./models";
 import { NgEzReloadDirective } from "./reload.directive";
 // import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
@@ -32,7 +32,7 @@ import { faClone } from '@fortawesome/free-regular-svg-icons';
 })
 export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterContentInit, OnDestroy {
 
-    @Input() options: NgEzCodePrettifyOptions;
+    @Input() config: NgEzCodePrettifyConfig;
 
     @Input() loading: boolean;
 
@@ -47,7 +47,7 @@ export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterConten
     @ContentChild(NgEzCodeLoadingErrorComponent) codeLoadingErrorComponent: NgEzCodeLoadingErrorComponent;
 
     @HostBinding('class') get classes(): string {
-        return this.options && this.options.theme ? this.options.theme : 'dark';
+        return this.config && this.config.theme ? this.config.theme : 'dark';
     }
 
     faClone = faClone;
@@ -91,19 +91,19 @@ export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterConten
 
     private update() {
 
-        if (!this.options || !(this.options.code || this.options.path))
+        if (!this.config || !(this.config.code || this.config.path))
             return;
 
         this._loading = true;
         this._error = false;
 
-        const code$ = this.options.code
-            ? of(this.options.code)
-            : this.service.get(this.options.path);
+        const code$ = this.config.code
+            ? of(this.config.code)
+            : this.service.get(this.config.path);
 
         const prettifiedCode$ = code$.pipe(
             tap(code => this._code = code),
-            map(code => this.prettify.formatCode(code, this.options.language, this.options.linenums)),
+            map(code => this.prettify.formatCode(code, this.config.language, this.config.linenums)),
             map(code => this.sanitizer.bypassSecurityTrustHtml(code)),
             tap(() => this._loading = false, () => {
                 this._loading = false;

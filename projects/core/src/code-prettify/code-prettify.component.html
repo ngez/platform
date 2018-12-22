@@ -1,13 +1,13 @@
-<div *ngIf="options && options.header" class="ngez-code-prettify-header">
-    {{options.header}}
+<div *ngIf="config && config.header" class="ngez-code-prettify-header">
+    {{config.header}}
 </div>
 <div class="ngez-code-prettify-content-container" style="position: relative">
-        <div *ngIf="options && options.canCopy && !isLoading && !hasError" class="ngez-copy-container">
+        <div *ngIf="config && config.canCopy && !isLoading && !hasError" class="ngez-copy-container">
             <button  [ngezCopyClipboard]="_code" class="ngez-copy-button">
                 <fa-icon size="2x" [icon]="faClone"></fa-icon>
             </button>
         </div>
-    <div [style.max-height.px]="options ? options.maxHeight : null" class="ngez-code-prettify-content">
+    <div [style.max-height.px]="config ? config.maxHeight : null" class="ngez-code-prettify-content">
         <ng-container *ngIf="codeLoadingComponent && isLoading">
             <ng-container *ngTemplateOutlet="codeLoadingComponent.template"></ng-container>
         </ng-container>
@@ -15,7 +15,6 @@
             <ng-container *ngTemplateOutlet="codeLoadingErrorComponent.template"></ng-container>
         </ng-container>
         <ng-container *ngIf="(prettifiedCode$ | async) as code">
-            
             <pre #pre class="ngez-code-prettify" [innerHTML]="code"></pre>
         </ng-container>
     </div>

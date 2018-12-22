@@ -1,0 +1,14 @@
+<ngez-code-prettify [config]="config">
+    <!-- Add these components only if you're fetching the code asynchronously -->
+    <!-- This will be visible while loading is true -->
+    <ngez-code-loading>
+        <span>Loading code...</span>
+    </ngez-code-loading>
+    <!-- This will be visible while error is true -->
+    <ngez-code-loading-error >
+        <div>
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

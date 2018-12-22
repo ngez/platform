@@ -1,34 +1,15 @@
-<h1 class="mat-headline">Nested Nav</h1>
+<h1 class="mat-headline">Code Prettify</h1>
 <p class="mat-body">
-    Nest your router links in lists which can be collapsed and expanded.
+    Easily display code snippets 
 </p>
 <h2 class="mat-title">Features</h2>
 <ul>
-    <li>Easily apply styling to active links.</li>
-    <li>Nest router links which can be expanded and collapsed.</li>
-    <li>Nav lists will automatically expand when navigating to a child route.</li>
+    <li>Light and dark theme, although you can easily add your own.</li>
+    <li>Copy to clipboard.</li>
+    <li>Pass the code as a string or a url to get an actual file and display its text.</li>
+    <li>Display "loading" and "error" components when getting the code asynchronously.</li>
 </ul>
 <h2 class="mat-title">Demo</h2>
-<ngez-nested-nav>
-    <ngez-nav-list title="Core">
-        <a class="nav-list-item" routerLink="/core" [routerLinkActiveOptions]="routerLinkOptions" routerLinkActive="active">Overview</a>
-        <ngez-nav-list title="Components">
-            <a class="nav-list-item" routerLink="/core/autocomplete" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Autocomplete</a>
-            <a class="nav-list-item" routerLink="/core/nested-nav" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Nested Nav</a>
-        </ngez-nav-list>
-        <ngez-nav-list title="Directives">
-            <a class="nav-list-item" routerLink="/core/outside" routerLinkActive="active">Outside Click</a>
-        </ngez-nav-list>
-    </ngez-nav-list>
-</ngez-nested-nav>
-<h2 class="mat-title">Import</h2>
-<p class="mat-body">
-    Begin by importing the module like this:
-</p>
-<pre>
-    import {{'{'}} NgEzNestedNavModule {{'}'}} from '@ngez/core';
-</pre>
-<h2 class="mat-title">Usage</h2>
 <ngez-code-prettify [config]="code1">
     <ngez-code-loading>
         <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
@@ -42,7 +23,14 @@
         </div>
     </ngez-code-loading-error>
 </ngez-code-prettify>
-<br>
+<h2 class="mat-title">Import</h2>
+<p class="mat-body">
+    Begin by importing the module like this:
+</p>
+<pre>
+    import {{'{'}} NgEzCodePrettifyModule {{'}'}} from '@ngez/core';
+</pre>
+<h2 class="mat-title">Usage</h2>
 <ngez-code-prettify [config]="code2">
     <ngez-code-loading>
         <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
@@ -56,9 +44,23 @@
         </div>
     </ngez-code-loading-error>
 </ngez-code-prettify>
-<h2 class="mat-title">Styling</h2>
-<p class="mat-body">By default when a router link is active or being hovered, it'll have a light background, this can easily be changed:</p>
+<br>
 <ngez-code-prettify [config]="code3">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<h2 class="mat-title">Styling</h2>
+<p class="mat-body">You can create your own theme, or overwrite the existing ones with new colors quite easily:</p>
+<ngez-code-prettify [config]="code4">
     <ngez-code-loading>
         <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
             <mat-spinner color="accent" diameter="50"></mat-spinner>

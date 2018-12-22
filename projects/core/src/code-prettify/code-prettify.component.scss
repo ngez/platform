@@ -56,6 +56,10 @@ ol.linenums {
     }
 }
 
+.ngez-code-prettify-header{
+    padding: 10px;
+}
+
 .light {
 
     .ngez-copy-button:hover{
@@ -65,7 +69,6 @@ ol.linenums {
     .ngez-code-prettify-header{
         background-color: $primary;
         color: white;
-        padding: 10px;
     }
 
     .ngez-code-prettify-content{
@@ -176,7 +179,6 @@ ol.linenums {
     .ngez-code-prettify-header{
         background-color: $accent;
         color: white;
-        padding: 10px;
     }
 
     .ngez-code-prettify-content{

@@ -10,6 +10,9 @@ const routes: Routes = [{
 }, {
     path: 'nested-nav',
     loadChildren: './pages/nested-nav/nested-nav.module#NestedNavModule'
+}, {
+    path: 'code-prettify',
+    loadChildren: './pages/code-prettify/code-prettify.module#CodePrettifyModule'
 }];
 
 @NgModule({

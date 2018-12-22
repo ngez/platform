@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { NgEzCodePrettifyOptions } from "@ngez/core";
+import { NgEzCodePrettifyConfig } from "@ngez/core";
 
 @Component({
     selector: 'core-overview',
@@ -12,13 +12,13 @@ export class CoreOverviewPage {
     isLoading = false;
     hasError = false;
 
-    options: NgEzCodePrettifyOptions = {
+    options: NgEzCodePrettifyConfig = {
         language: 'sh',
         path: 'assets/code-snippets/core/overview/installation.sh',
         theme: 'dark'
     };
 
-    options2: NgEzCodePrettifyOptions = {
+    options2: NgEzCodePrettifyConfig = {
         language: 'sh',
         path: 'assets/code-snippets/core/overview/angular-cdk-installation.sh',
         theme: 'dark'

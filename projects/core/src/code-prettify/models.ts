@@ -1,4 +1,4 @@
-export interface NgEzCodePrettifyOptions{
+export interface NgEzCodePrettifyConfig{
     header?: string;
     code?: string;
     path?: string;

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NgEzCodePrettifyOptions } from "@ngez/core";
+import { NgEzCodePrettifyConfig } from "@ngez/core";
 
 @Component({
     selector: 'nested-nav',
@@ -11,7 +11,7 @@ export class NestedNavPage {
         exact: true
     };
 
-    code1: NgEzCodePrettifyOptions = {
+    code1: NgEzCodePrettifyConfig = {
         language: 'html',
         path: 'assets/code-snippets/core/nested-nav/app.component.html',
         theme: 'dark',
@@ -19,7 +19,7 @@ export class NestedNavPage {
         header: 'app.component.html'
     };
 
-    code2: NgEzCodePrettifyOptions = {
+    code2: NgEzCodePrettifyConfig = {
         language: 'typescript',
         path: 'assets/code-snippets/core/nested-nav/app.component.ts',
         theme: 'dark',
@@ -27,7 +27,7 @@ export class NestedNavPage {
         header: 'app.component.ts'
     };
 
-    code3: NgEzCodePrettifyOptions = {
+    code3: NgEzCodePrettifyConfig = {
         language: 'css',
         path: 'assets/code-snippets/core/nested-nav/custom.scss',
         theme: 'dark',
