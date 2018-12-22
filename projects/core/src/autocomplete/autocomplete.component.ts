@@ -78,7 +78,7 @@ export class NgEzAutocompleteComponent {
     const currentScrollPosition = this.panel.nativeElement.scrollTop;
     
     if (offset - option.getOffsetHeight() < currentScrollPosition)
-      return offset - option.getOffsetHeight();
+      return offset - option.getOffsetHeight() + 3;
 
     const optionHeight = option.getOffsetHeight();
     

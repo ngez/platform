@@ -1,0 +1,5 @@
+.ngez-autocomplete-option{
+    &.active, &:hover:not(.disabled){
+        background-color: #1e1e1e !important;
+    }
+}

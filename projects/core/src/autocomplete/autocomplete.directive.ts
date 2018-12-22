@@ -25,6 +25,7 @@ import { DOCUMENT } from "@angular/common";
 
 @Directive({
     selector: '[ngezAutocomplete]',
+    exportAs: 'ngezAutocomplete',
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => NgEzAutocompleteDirective),
@@ -39,11 +40,15 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
 
     private subscription: Subscription;
 
-    text$ = new ReplaySubject(1);
+    text$ = new ReplaySubject<string>(1);
 
-    onChange: Function;
+    private onChange: Function;
 
-    onTouched: Function;
+    private onTouched: Function;
+
+    isOpen = false;
+
+    isDisabled = false;
 
     constructor(
         private element: ElementRef,
@@ -52,7 +57,8 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
         @Optional() @Inject(DOCUMENT) private document: any) { }
 
     ngOnDestroy() {
-        this.overlayRef.dispose();
+        if(this.overlayRef)
+            this.overlayRef.dispose();
         this.unsubscribe();
     }
 
@@ -73,7 +79,7 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
         const prevActiveItem = this.autocomplete.keyboardEventsManager.activeItem;
         const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
 
-        if (this.isVisible) {
+        if (this.isOpen) {
             this.autocomplete.handleKeyDown(event);
             if (isArrowKey) {
                 this.scrollToOption();
@@ -85,8 +91,10 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
     }
 
     open() {
-        if (this.isVisible)
+        if (this.isOpen || this.isDisabled)
             return;
+
+        this.isOpen = true;
 
         const positions = [
             new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
@@ -124,32 +132,35 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
     }
 
     close() {
-        if (!this.isVisible)
+        if (!this.isOpen)
             return;
 
+        this.isOpen = false;
         this.autocomplete.closed.emit();
         this.autocomplete.reset();
         this.overlayRef.detach();
         this.unsubscribe();
     }
 
+    toggle() {
+        this.isOpen ? this.close() : this.open();
+    }
+
     writeValue(value: any): void {
         this.setValue(value);
     }
 
-    // Implemented as part of ControlValueAccessor.
     registerOnChange(fn: (value: any) => {}): void {
         this.onChange = fn;
     }
 
-    // Implemented as part of ControlValueAccessor.
     registerOnTouched(fn: () => {}) {
         this.onTouched = fn;
     }
 
-    // Implemented as part of ControlValueAccessor.
     setDisabledState(isDisabled: boolean) {
         this.element.nativeElement.disabled = isDisabled;
+        this.isDisabled = isDisabled;
     }
 
     private setValue(value: any) {
@@ -159,10 +170,6 @@ export class NgEzAutocompleteDirective implements ControlValueAccessor, OnDestro
             : value;
 
         this.element.nativeElement.value = text;
-    }
-
-    get isVisible() {
-        return this.overlayRef ? this.overlayRef.hasAttached() : false;
     }
 
     private scrollToOption(){

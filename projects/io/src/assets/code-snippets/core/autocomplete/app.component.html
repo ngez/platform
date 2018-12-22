@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+    <input formControlName="user" type="text" [ngezAutocomplete]="autocomplete">
+</form>
+
+<ngez-autocomplete [config]="config" #autocomplete>
+    <ngez-autocomplete-option [value]="user" *ngFor="let user of users">
+        <!-- Any HTML can go here -->
+        <div>
+            <span>{{user.username}}</span>
+        </div>
+    </ngez-autocomplete-option>
+</ngez-autocomplete>

@@ -1,5 +1,7 @@
 <ng-template>
     <div #panel [style.max-height.px]="config && config.maxHeight ? config.maxHeight : defaultConfig.maxHeight" class="ngez-autocomplete">
-        <ng-content></ng-content>
+        <div class="ngez-autocomplete-content">
+            <ng-content></ng-content>
+        </div>
     </div>
 </ng-template>

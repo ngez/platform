@@ -17,11 +17,11 @@ export class NgEzAutocompleteOptionComponent implements Highlightable {
 
     @Input() value: any;
 
-    @Input() @HostBinding('class.disabled') disabled = false;
+    @Input() disabled = false;
 
     @Output() selected = new EventEmitter();
 
-    @HostBinding('class.active') active = false;
+    active = false;
 
     constructor(private element: ElementRef){}
 

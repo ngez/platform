@@ -1,9 +1,9 @@
 @import "../../variables";
 
-:host{
+.ngez-autocomplete-option{
     display:block;
     padding: 8px;
-    
+    width: auto;
     &.active{
         background-color: $primary;
         color: white;

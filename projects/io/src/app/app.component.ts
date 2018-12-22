@@ -5,7 +5,6 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NgEzAutocompleteConfig, NgEzAutocompleteDirective } from '@ngez/core'
 import { debounceTime, map, tap, filter, switchMap } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import * as faker from 'faker';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';

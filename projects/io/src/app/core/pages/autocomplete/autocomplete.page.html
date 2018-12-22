@@ -1,1 +1,93 @@
-autocomplete
+<h1 class="mat-headline">Autocomplete</h1>
+<p class="mat-body">
+    Use your own styled input and enhance it with panel from which the user may select the desired option.
+</p>
+<h2 class="mat-title">Features</h2>
+<ul>
+    <li>Options may contain any HTML.</li>
+    <li>Value may be an object. Simply provide a label extractor function to get the correct string.</li>
+    <li>Navigate and select with the keyboard.</li>
+    <li>Programatically open/close/toggle the panel.</li>
+</ul>
+<h2 class="mat-title">Demo</h2>
+<form [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout="column">
+        <label>Default input</label>
+        <input formControlName="c1" type="text" [ngezAutocomplete]="autocomplete">
+    </div>
+    <div fxLayout="column">
+        <label>Bootstrap input</label>
+        <input style="width: auto;" class="form-control" formControlName="c1" type="text" [ngezAutocomplete]="autocomplete" >
+    </div>
+</form>
+<ngez-autocomplete [config]="config" #autocomplete>
+    <ngez-autocomplete-option [value]="option" *ngFor="let option of options1">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <img height="30" width="30" [src]="option.avatar" alt="Avatar">
+            <div>
+                <span>{{option.username}}</span>
+            </div>
+        </div>
+    </ngez-autocomplete-option>
+</ngez-autocomplete>
+<h2 class="mat-title">Usage</h2>
+<p class="mat-body">First add the following line to your styles.scss file:</p>
+<ngez-code-prettify [options]="code1">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<p class="mat-body">Then you import the module like:</p>
+<pre>
+    import {{'{'}} NgEzAutocompleteModule {{'}'}} from '@ngez/core';
+</pre>
+<ngez-code-prettify [options]="code2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<br>
+<ngez-code-prettify [options]="code3">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<h2 class="mat-title">Styling</h2>
+<p class="mat-body">Customizing the appearance of the autocomplete panel and its options is quite simple:</p>
+<ngez-code-prettify [options]="code4">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

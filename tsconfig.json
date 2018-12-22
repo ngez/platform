@@ -22,12 +22,6 @@
       ],
       "@ngez/core/*": [
         "dist/core/*"
-      ],
-      "prism": [
-        "dist/prism"
-      ],
-      "prism/*": [
-        "dist/prism/*"
       ]
     }
   }
