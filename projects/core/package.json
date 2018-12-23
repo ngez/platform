@@ -1,6 +1,28 @@
 {
   "name": "@ngez/core",
-  "version": "0.0.1",
+  "version": "1.0.1",
+  "description": "A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services",
+  "keywords": [
+    "ngez",
+    "angular",
+    "core",
+    "autocomplete",
+    "clipboard",
+    "code",
+    "prettify",
+    "code-prettify",
+    "nested",
+    "nav",
+    "nested-nav",
+    "outside",
+    "click",
+    "minimalistic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngez/platform"
+  },
+  "license": "MIT",
   "dependencies": {
     "@fortawesome/angular-fontawesome": "^0.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",

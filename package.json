@@ -5,8 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build_core": "ng build core && npm run copy",
+    "build_core": "ng build core && npm run copy && npm run copy_readme && npm run copy_license",
     "copy": "xcopy .\\projects\\core\\_variables.scss .\\dist\\core\\",
+    "copy_readme": "xcopy .\\README.md .\\dist\\core\\",
+    "copy_license": "xcopy .\\LICENSE .\\dist\\core\\",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

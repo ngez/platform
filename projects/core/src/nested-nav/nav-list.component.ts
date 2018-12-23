@@ -1,5 +1,5 @@
 import { Component, Input, ContentChildren, QueryList, AfterContentInit, OnInit, OnDestroy, OnChanges, ViewEncapsulation } from "@angular/core";
-import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faAngleDown, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink, RouterLinkWithHref, Router, NavigationEnd } from "@angular/router";
 import { Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
@@ -22,9 +22,9 @@ export class NgEzNavListComponent implements OnChanges, OnInit, AfterContentInit
 
     @ContentChildren(RouterLinkWithHref) linksWithHrefs: QueryList<RouterLinkWithHref>;
 
-    faAngleUp = faAngleUp;
+    faAngleUp: IconDefinition = faAngleUp;
 
-    faAngleDown = faAngleDown;
+    faAngleDown: IconDefinition = faAngleDown;
 
     open: boolean = false;
 

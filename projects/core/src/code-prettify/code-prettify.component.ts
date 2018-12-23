@@ -23,7 +23,7 @@ import { NgEzCodeLoadingErrorComponent } from "./code-loading-error.component";
 import { Observable, of, Subscription } from "rxjs";
 import { NgEzCodePrettifyConfig } from "./models";
 import { NgEzReloadDirective } from "./reload.directive";
-import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { faClone, IconDefinition } from '@fortawesome/free-regular-svg-icons';
 import { isPlatformBrowser } from "@angular/common";
 
 @Component({
@@ -52,7 +52,7 @@ export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterConten
         return this.config && this.config.theme ? this.config.theme : 'dark';
     }
 
-    faClone = faClone;
+    faClone: IconDefinition = faClone;
 
     _code: string;
     
