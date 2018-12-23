@@ -1,7 +1,4 @@
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-// import { 
-//   NgEzAutocompleteDirective, 
-//   NgEzAutocompleteConfig } from 'projects/ngez/core/src/public_api';
 import { NgEzAutocompleteConfig, NgEzAutocompleteDirective } from '@ngez/core'
 import { debounceTime, map, tap, filter, switchMap } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';

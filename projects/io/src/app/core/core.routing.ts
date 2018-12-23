@@ -16,6 +16,9 @@ const routes: Routes = [{
 }, {
     path: 'outside',
     loadChildren: './pages/outside/outside.module#OutsideModule'
+}, {
+    path: 'clipboard',
+    loadChildren: './pages/clipboard/clipboard.module#ClipboardModule'
 }];
 
 @NgModule({

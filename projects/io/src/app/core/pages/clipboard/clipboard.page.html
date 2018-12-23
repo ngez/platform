@@ -1,0 +1,46 @@
+<h1 class="mat-headline">Clipboard</h1>
+<p class="mat-body">
+    Copy any string to the clipboard.
+</p>
+<h2 class="mat-title">Demo</h2>
+<form [formGroup]="form" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="24px">
+    <mat-form-field fxFlex>
+        <input matInput formControlName="text" placeholder="Type something to be copied...">
+    </mat-form-field>
+    <button (click)="onCopy()" mat-flat-button color="primary">Copy</button>
+</form>
+<h2 class="mat-title">Import</h2>
+<p class="mat-body">Begin by importing the module like this:</p>
+<pre>
+    import {{'{'}} NgEzClipboardModule {{'}'}} from '@ngez/core';
+</pre>
+<h2 class="mat-title">Usage</h2>
+You can place the Directive on a button and upon click, the payload will be copied to clipboard. Or you can directly use the Service:
+<br><br>
+<ngez-code-prettify [config]="config1">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<br>
+<ngez-code-prettify [config]="config2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

@@ -23,7 +23,6 @@ import { NgEzCodeLoadingErrorComponent } from "./code-loading-error.component";
 import { Observable, of, Subscription } from "rxjs";
 import { NgEzCodePrettifyConfig } from "./models";
 import { NgEzReloadDirective } from "./reload.directive";
-// import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
 import { isPlatformBrowser } from "@angular/common";
 

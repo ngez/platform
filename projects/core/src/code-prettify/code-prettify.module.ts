@@ -7,7 +7,7 @@ import { NgEzCodeLoadingErrorComponent } from "./code-loading-error.component";
 import { CommonModule } from "@angular/common";
 import { NgEzReloadDirective } from "./reload.directive";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgEzClipboardModule } from "../clipboard";
+import { NgEzClipboardModule } from "../clipboard/index";
 
 const COMMON_DECLARATIONS = [
     NgEzCodePrettifyComponent, 
