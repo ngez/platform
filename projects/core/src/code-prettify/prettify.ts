@@ -74,7 +74,7 @@ var PR;
  * UI events.
  * If set to {@code false}, {@code prettyPrint()} is synchronous.
  */
-var PR_SHOULD_USE_CONTINUATION = true
+var PR_SHOULD_USE_CONTINUATION = true;
 if (typeof window !== 'undefined') {
   window['PR_SHOULD_USE_CONTINUATION'] = PR_SHOULD_USE_CONTINUATION;
 }
@@ -251,7 +251,7 @@ function combinePrefixPatterns(regexs) {
     } else {
       return charsetPart.charCodeAt(1);
     }
-  }
+  };
 
   function encodeEscape(charCode) {
     if (charCode < 0x20) {
@@ -260,7 +260,7 @@ function combinePrefixPatterns(regexs) {
     var ch = String.fromCharCode(charCode);
     return (ch === '\\' || ch === '-' || ch === ']' || ch === '^')
       ? "\\" + ch : ch;
-  }
+  };
 
   function caseFoldCharset(charSet) {
     var charsetParts = charSet.substring(1, charSet.length - 1).match(
@@ -332,7 +332,7 @@ function combinePrefixPatterns(regexs) {
     }
     out.push(']');
     return out.join('');
-  }
+  };
 
   function allowAnywhereFoldCaseAndRenumberGroups(regex) {
     // Split into character sets, escape sequences, punctuation strings
@@ -429,7 +429,7 @@ function combinePrefixPatterns(regexs) {
     }
 
     return parts.join('');
-  }
+  };
 
   var rewritten = [];
   for (var i = 0, n = regexs.length; i < n; ++i) {
@@ -440,7 +440,7 @@ function combinePrefixPatterns(regexs) {
   }
 
   return new RegExp(rewritten.join('|'), ignoreCase ? 'gi' : 'g');
-}
+};
 
 
 function extractSourceSpans(node, isPreformatted) {
@@ -479,7 +479,7 @@ function extractSourceSpans(node, isPreformatted) {
         spans[(k++ << 1) | 1] = node;
       }
     }
-  }
+  };
 
   walk(node);
 
@@ -487,7 +487,7 @@ function extractSourceSpans(node, isPreformatted) {
     sourceCode: chunks.join('').replace(/\n$/, ''),
     spans: spans
   };
-}
+};
 
 function appendDecorations(
   sourceNode, basePos, sourceCode, langHandler, out) {
@@ -505,7 +505,7 @@ function appendDecorations(
   };
   langHandler(job);
   out.push.apply(out, job.decorations);
-}
+};
 
 var notWs = /\S/;
 
@@ -531,7 +531,7 @@ function childContentWrapper(element) {
         : wrapper;
   }
   return wrapper === element ? undefined : wrapper;
-}
+};
 
 function createSimpleLexer(shortcutStylePatterns, fallthroughStylePatterns) {
   var shortcuts = {};
@@ -648,7 +648,7 @@ function createSimpleLexer(shortcutStylePatterns, fallthroughStylePatterns) {
     job.decorations = decorations;
   };
   return decorate;
-}
+};
 
 function sourceDecorator(options) {
   var shortcutStylePatterns = [], fallthroughStylePatterns = [];
@@ -815,7 +815,7 @@ function sourceDecorator(options) {
     [PR_PUNCTUATION, new RegExp(punctuation), null]);
 
   return createSimpleLexer(shortcutStylePatterns, fallthroughStylePatterns);
-}
+};
 
 var decorateSource = sourceDecorator({
   'keywords': ALL_KEYWORDS,
@@ -872,7 +872,7 @@ function numberLines(node, startLineNum, isPreformatted) {
         }
       }
     }
-  }
+  };
 
   // Split a line after the given node.
   function breakAfter(lineEndNode) {
@@ -904,7 +904,7 @@ function numberLines(node, startLineNum, isPreformatted) {
         }
       }
       return rightSide;
-    }
+    };
 
     var copiedListItem = breakLeftOf(lineEndNode.nextSibling, 0);
 
@@ -916,7 +916,7 @@ function numberLines(node, startLineNum, isPreformatted) {
     }
     // Put it on the list of lines for later processing.
     listItems.push(copiedListItem);
-  }
+  };
 
   // Split lines while there are lines left to split.
   for (var i = 0;  // Number of lines that have been split so far.
@@ -946,7 +946,7 @@ function numberLines(node, startLineNum, isPreformatted) {
   }
 
   node.appendChild(ol);
-}
+};
 
 
 function recombineTagsAndDecorations(job) {
@@ -1058,7 +1058,7 @@ function recombineTagsAndDecorations(job) {
       sourceNode.style.display = oldDisplay;
     }
   }
-}
+};
 
 
 /** Maps language-specific file extensions to handlers. */
@@ -1073,116 +1073,119 @@ function registerLangHandler(handler, fileExtensions) {
       console['warn']('cannot override language handler %s', ext);
     }
   }
-}
+};
 function langHandlerForExtension(extension, source) {
+  if (!(extension && langHandlerRegistry.hasOwnProperty(extension))) {
+    registerLangHandler(decorateSource, ['default-code']);
+    registerLangHandler(
+      createSimpleLexer(
+        [],
+        [
+          [PR_PLAIN, /^[^<?]+/],
+          [PR_DECLARATION, /^<!\w[^>]*(?:>|$)/],
+          [PR_COMMENT, /^<\!--[\s\S]*?(?:-\->|$)/],
+          // Unescaped content in an unknown language
+          ['lang-', /^<\?([\s\S]+?)(?:\?>|$)/],
+          ['lang-', /^<%([\s\S]+?)(?:%>|$)/],
+          [PR_PUNCTUATION, /^(?:<[%?]|[%?]>)/],
+          ['lang-', /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i],
+          // Unescaped content in javascript.  (Or possibly vbscript).
+          ['lang-js', /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i],
+          // Contains unescaped stylesheet content
+          ['lang-css', /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i],
+          ['lang-in.tag', /^(<\/?[a-z][^<>]*>)/i]
+        ]),
+      ['default-markup', 'htm', 'html', 'mxml', 'xhtml', 'xml', 'xsl']);
+    registerLangHandler(
+      createSimpleLexer(
+        [
+          [PR_PLAIN, /^[\s]+/, null, ' \t\r\n'],
+          [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
+        ],
+        [
+          [PR_TAG, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i],
+          [PR_ATTRIB_NAME, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],
+          ['lang-uq.val', /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/],
+          [PR_PUNCTUATION, /^[=<>\/]+/],
+          ['lang-js', /^on\w+\s*=\s*\"([^\"]+)\"/i],
+          ['lang-js', /^on\w+\s*=\s*\'([^\']+)\'/i],
+          ['lang-js', /^on\w+\s*=\s*([^\"\'>\s]+)/i],
+          ['lang-css', /^style\s*=\s*\"([^\"]+)\"/i],
+          ['lang-css', /^style\s*=\s*\'([^\']+)\'/i],
+          ['lang-css', /^style\s*=\s*([^\"\'>\s]+)/i]
+        ]),
+      ['in.tag']);
+    registerLangHandler(
+      createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);
+    registerLangHandler(sourceDecorator({
+      'keywords': CPP_KEYWORDS,
+      'hashComments': true,
+      'cStyleComments': true,
+      'types': C_TYPES
+    }), ['c', 'cc', 'cpp', 'cxx', 'cyc', 'm']);
+    registerLangHandler(sourceDecorator({
+      'keywords': 'null,true,false'
+    }), ['json']);
+    registerLangHandler(sourceDecorator({
+      'keywords': CSHARP_KEYWORDS,
+      'hashComments': true,
+      'cStyleComments': true,
+      'verbatimStrings': true,
+      'types': C_TYPES
+    }), ['cs']);
+    registerLangHandler(sourceDecorator({
+      'keywords': JAVA_KEYWORDS,
+      'cStyleComments': true
+    }), ['java']);
+    registerLangHandler(sourceDecorator({
+      'keywords': SH_KEYWORDS,
+      'hashComments': true,
+      'multiLineStrings': true
+    }), ['bash', 'bsh', 'csh', 'sh']);
+    registerLangHandler(sourceDecorator({
+      'keywords': PYTHON_KEYWORDS,
+      'hashComments': true,
+      'multiLineStrings': true,
+      'tripleQuotedStrings': true
+    }), ['cv', 'py', 'python']);
+    registerLangHandler(sourceDecorator({
+      'keywords': PERL_KEYWORDS,
+      'hashComments': true,
+      'multiLineStrings': true,
+      'regexLiterals': 2  // multiline regex literals
+    }), ['perl', 'pl', 'pm']);
+    registerLangHandler(sourceDecorator({
+      'keywords': RUBY_KEYWORDS,
+      'hashComments': true,
+      'multiLineStrings': true,
+      'regexLiterals': true
+    }), ['rb', 'ruby']);
+    registerLangHandler(sourceDecorator({
+      'keywords': JSCRIPT_KEYWORDS,
+      'cStyleComments': true,
+      'regexLiterals': true
+    }), ['javascript', 'js', 'ts', 'typescript']);
+    registerLangHandler(sourceDecorator({
+      'keywords': COFFEE_KEYWORDS,
+      'hashComments': 3,  // ### style block comments
+      'cStyleComments': true,
+      'multilineStrings': true,
+      'tripleQuotedStrings': true,
+      'regexLiterals': true
+    }), ['coffee']);
+    registerLangHandler(
+      createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']);
+  }
   if (!(extension && langHandlerRegistry.hasOwnProperty(extension))) {
     // Treat it as markup if the first non whitespace character is a < and
     // the last non-whitespace character is a >.
-    extension = /^\s*</.test(source)
+    extension = (/^\s*</).test(source)
       ? 'default-markup'
       : 'default-code';
   }
   return langHandlerRegistry[extension];
-}
-registerLangHandler(decorateSource, ['default-code']);
-registerLangHandler(
-  createSimpleLexer(
-    [],
-    [
-      [PR_PLAIN, /^[^<?]+/],
-      [PR_DECLARATION, /^<!\w[^>]*(?:>|$)/],
-      [PR_COMMENT, /^<\!--[\s\S]*?(?:-\->|$)/],
-      // Unescaped content in an unknown language
-      ['lang-', /^<\?([\s\S]+?)(?:\?>|$)/],
-      ['lang-', /^<%([\s\S]+?)(?:%>|$)/],
-      [PR_PUNCTUATION, /^(?:<[%?]|[%?]>)/],
-      ['lang-', /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i],
-      // Unescaped content in javascript.  (Or possibly vbscript).
-      ['lang-js', /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i],
-      // Contains unescaped stylesheet content
-      ['lang-css', /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i],
-      ['lang-in.tag', /^(<\/?[a-z][^<>]*>)/i]
-    ]),
-  ['default-markup', 'htm', 'html', 'mxml', 'xhtml', 'xml', 'xsl']);
-registerLangHandler(
-  createSimpleLexer(
-    [
-      [PR_PLAIN, /^[\s]+/, null, ' \t\r\n'],
-      [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
-    ],
-    [
-      [PR_TAG, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i],
-      [PR_ATTRIB_NAME, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],
-      ['lang-uq.val', /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/],
-      [PR_PUNCTUATION, /^[=<>\/]+/],
-      ['lang-js', /^on\w+\s*=\s*\"([^\"]+)\"/i],
-      ['lang-js', /^on\w+\s*=\s*\'([^\']+)\'/i],
-      ['lang-js', /^on\w+\s*=\s*([^\"\'>\s]+)/i],
-      ['lang-css', /^style\s*=\s*\"([^\"]+)\"/i],
-      ['lang-css', /^style\s*=\s*\'([^\']+)\'/i],
-      ['lang-css', /^style\s*=\s*([^\"\'>\s]+)/i]
-    ]),
-  ['in.tag']);
-registerLangHandler(
-  createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);
-registerLangHandler(sourceDecorator({
-  'keywords': CPP_KEYWORDS,
-  'hashComments': true,
-  'cStyleComments': true,
-  'types': C_TYPES
-}), ['c', 'cc', 'cpp', 'cxx', 'cyc', 'm']);
-registerLangHandler(sourceDecorator({
-  'keywords': 'null,true,false'
-}), ['json']);
-registerLangHandler(sourceDecorator({
-  'keywords': CSHARP_KEYWORDS,
-  'hashComments': true,
-  'cStyleComments': true,
-  'verbatimStrings': true,
-  'types': C_TYPES
-}), ['cs']);
-registerLangHandler(sourceDecorator({
-  'keywords': JAVA_KEYWORDS,
-  'cStyleComments': true
-}), ['java']);
-registerLangHandler(sourceDecorator({
-  'keywords': SH_KEYWORDS,
-  'hashComments': true,
-  'multiLineStrings': true
-}), ['bash', 'bsh', 'csh', 'sh']);
-registerLangHandler(sourceDecorator({
-  'keywords': PYTHON_KEYWORDS,
-  'hashComments': true,
-  'multiLineStrings': true,
-  'tripleQuotedStrings': true
-}), ['cv', 'py', 'python']);
-registerLangHandler(sourceDecorator({
-  'keywords': PERL_KEYWORDS,
-  'hashComments': true,
-  'multiLineStrings': true,
-  'regexLiterals': 2  // multiline regex literals
-}), ['perl', 'pl', 'pm']);
-registerLangHandler(sourceDecorator({
-  'keywords': RUBY_KEYWORDS,
-  'hashComments': true,
-  'multiLineStrings': true,
-  'regexLiterals': true
-}), ['rb', 'ruby']);
-registerLangHandler(sourceDecorator({
-  'keywords': JSCRIPT_KEYWORDS,
-  'cStyleComments': true,
-  'regexLiterals': true
-}), ['javascript', 'js', 'ts', 'typescript']);
-registerLangHandler(sourceDecorator({
-  'keywords': COFFEE_KEYWORDS,
-  'hashComments': 3,  // ### style block comments
-  'cStyleComments': true,
-  'multilineStrings': true,
-  'tripleQuotedStrings': true,
-  'regexLiterals': true
-}), ['coffee']);
-registerLangHandler(
-  createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']);
+};
+
 
 function applyDecorator(job) {
   var opt_langExtension = job.langExtension;
@@ -1198,7 +1201,6 @@ function applyDecorator(job) {
 
     // Apply the appropriate language handler
     langHandlerForExtension(opt_langExtension, source)(job);
-
     // Integrate the decorations and tags back into the source code,
     // modifying the sourceNode in place.
     recombineTagsAndDecorations(job);
@@ -1241,7 +1243,7 @@ export function $prettyPrintOne(sourceCodeHtml, opt_langExtension, opt_numberLin
   };
   applyDecorator(job);
   return container.innerHTML;
-}
+};
 
 function $prettyPrint(opt_whenDone, opt_root) {
   var root = opt_root || document.body;
@@ -1401,7 +1403,7 @@ function $prettyPrint(opt_whenDone, opt_root) {
     } else if ('function' === typeof opt_whenDone) {
       opt_whenDone();
     }
-  }
+  };
 
   doWork();
-}
+};
