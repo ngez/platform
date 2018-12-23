@@ -1,6 +1,6 @@
 # NgEz
 
-Library consisting minimalistic components and utility Directives and Services.
+A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services
 
 ## Documentation
 
