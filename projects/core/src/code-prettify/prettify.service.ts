@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
-import 'code-prettify/src/prettify';
+import { $prettyPrintOne } from './prettify';
 
 @Injectable()
 export class PrettifyService {
 
     formatCode(code: string, language?: string, linenums?: number | boolean) {
-        const { PR: { prettyPrintOne } = { prettyPrintOne: null }} = window as any;
-
-        return prettyPrintOne(this.encode(code), language, linenums);
+        return $prettyPrintOne(this.encode(code), language, linenums);
     }
 
     private encode(value: string){

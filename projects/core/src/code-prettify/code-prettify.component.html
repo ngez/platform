@@ -2,11 +2,11 @@
     {{config.header}}
 </div>
 <div class="ngez-code-prettify-content-container" style="position: relative">
-        <div *ngIf="config && config.canCopy && !isLoading && !hasError" class="ngez-copy-container">
-            <button  [ngezCopyClipboard]="_code" class="ngez-copy-button">
-                <fa-icon size="2x" [icon]="faClone"></fa-icon>
-            </button>
-        </div>
+    <div *ngIf="config && config.canCopy && !isLoading && !hasError" class="ngez-copy-container">
+        <button [ngezClipboard]="_code" class="ngez-copy-button">
+            <fa-icon size="2x" [icon]="faClone"></fa-icon>
+        </button>
+    </div>
     <div [style.max-height.px]="config ? config.maxHeight : null" class="ngez-code-prettify-content">
         <ng-container *ngIf="codeLoadingComponent && isLoading">
             <ng-container *ngTemplateOutlet="codeLoadingComponent.template"></ng-container>

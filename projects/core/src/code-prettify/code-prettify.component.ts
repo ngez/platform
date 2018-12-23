@@ -11,7 +11,9 @@ import {
     OnDestroy, 
     HostBinding,
     OnChanges,
-    OnInit} from "@angular/core";
+    OnInit,
+    PLATFORM_ID, 
+    Inject} from "@angular/core";
 import { PrettifyService } from "./prettify.service";
 import { CodeService } from "./code.service";
 import { map, switchMap, tap, delay } from "rxjs/operators";
@@ -23,6 +25,7 @@ import { NgEzCodePrettifyConfig } from "./models";
 import { NgEzReloadDirective } from "./reload.directive";
 // import { faClone } from '@fortawesome/free-solid-svg-icons';
 import { faClone } from '@fortawesome/free-regular-svg-icons';
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
     selector: 'ngez-code-prettify',
@@ -63,6 +66,7 @@ export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterConten
     private subscription: Subscription;
 
     constructor(
+        @Inject(PLATFORM_ID) private platformId: Object,
         private sanitizer: DomSanitizer,
         private prettify: PrettifyService,
         private service: CodeService) { }
@@ -91,7 +95,7 @@ export class NgEzCodePrettifyComponent implements OnChanges, OnInit, AfterConten
 
     private update() {
 
-        if (!this.config || !(this.config.code || this.config.path))
+        if (!isPlatformBrowser(this.platformId) || !this.config || !(this.config.code || this.config.path))
             return;
 
         this._loading = true;

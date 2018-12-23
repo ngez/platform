@@ -4,7 +4,7 @@
 </p>
 <h2 class="mat-title">Demo</h2>
 <div fxLayout="row" fxLayoutAlign="center center">
-    <div ngezOutside (outsideClick)="onOutsideClick()" fxLayout="column" fxLayoutAlign="center center" style="width: 200px; height: 200px; background-color: aquamarine">
+    <div (ngezOutsideClick)="onOutsideClick()" fxLayout="column" fxLayoutAlign="center center" style="width: 200px; height: 200px; background-color: aquamarine">
         <span>Click outside</span>
         <span>Clicks: {{clicks}}</span>
     </div>

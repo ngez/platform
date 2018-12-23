@@ -5,8 +5,7 @@
     "@fortawesome/angular-fontawesome": "^0.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
-    "@fortawesome/free-regular-svg-icons": "^5.5.0",
-    "code-prettify": "google/code-prettify"
+    "@fortawesome/free-regular-svg-icons": "^5.5.0"
   },
   "peerDependencies": {
     "@angular/common": "^7.1.0",
