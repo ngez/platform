@@ -3,7 +3,8 @@
 </form>
 
 <ngez-autocomplete [config]="config" #ngezAutocomplete>
-    <ngez-autocomplete-option [value]="user" *ngFor="let user of users">
+    <!-- We're disabling all the options with an even index -->
+    <ngez-autocomplete-option [disabled]="isEven" [value]="user" *ngFor="let user of users; even as isEven">
         <!-- Any HTML can go here -->
         <div>
             <span>{{user.username}}</span>

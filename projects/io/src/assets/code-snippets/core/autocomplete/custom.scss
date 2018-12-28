@@ -1,4 +1,11 @@
 .ngez-autocomplete-option{
+
+    //By default a disabled option only will change the cursor on hover.
+    //You can easily add your own styles like this:
+    &.disabled{
+        color: red;
+    }
+
     &.active, &:hover:not(.disabled){
         background-color: #1e1e1e !important;
     }

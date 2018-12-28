@@ -4,6 +4,11 @@
     display:block;
     padding: 8px;
     width: auto;
+
+    &.disabled{
+        cursor: not-allowed;
+    }
+
     &.active{
         background-color: $primary;
         color: white;

@@ -1069,117 +1069,15 @@ function registerLangHandler(handler, fileExtensions) {
     var ext = fileExtensions[i];
     if (!langHandlerRegistry.hasOwnProperty(ext)) {
       langHandlerRegistry[ext] = handler;
-    } else if (win['console']) {
-      console['warn']('cannot override language handler %s', ext);
     }
   }
 };
 function langHandlerForExtension(extension, source) {
-  if (!(extension && langHandlerRegistry.hasOwnProperty(extension))) {
-    registerLangHandler(decorateSource, ['default-code']);
-    registerLangHandler(
-      createSimpleLexer(
-        [],
-        [
-          [PR_PLAIN, /^[^<?]+/],
-          [PR_DECLARATION, /^<!\w[^>]*(?:>|$)/],
-          [PR_COMMENT, /^<\!--[\s\S]*?(?:-\->|$)/],
-          // Unescaped content in an unknown language
-          ['lang-', /^<\?([\s\S]+?)(?:\?>|$)/],
-          ['lang-', /^<%([\s\S]+?)(?:%>|$)/],
-          [PR_PUNCTUATION, /^(?:<[%?]|[%?]>)/],
-          ['lang-', /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i],
-          // Unescaped content in javascript.  (Or possibly vbscript).
-          ['lang-js', /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i],
-          // Contains unescaped stylesheet content
-          ['lang-css', /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i],
-          ['lang-in.tag', /^(<\/?[a-z][^<>]*>)/i]
-        ]),
-      ['default-markup', 'htm', 'html', 'mxml', 'xhtml', 'xml', 'xsl']);
-    registerLangHandler(
-      createSimpleLexer(
-        [
-          [PR_PLAIN, /^[\s]+/, null, ' \t\r\n'],
-          [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
-        ],
-        [
-          [PR_TAG, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i],
-          [PR_ATTRIB_NAME, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],
-          ['lang-uq.val', /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/],
-          [PR_PUNCTUATION, /^[=<>\/]+/],
-          ['lang-js', /^on\w+\s*=\s*\"([^\"]+)\"/i],
-          ['lang-js', /^on\w+\s*=\s*\'([^\']+)\'/i],
-          ['lang-js', /^on\w+\s*=\s*([^\"\'>\s]+)/i],
-          ['lang-css', /^style\s*=\s*\"([^\"]+)\"/i],
-          ['lang-css', /^style\s*=\s*\'([^\']+)\'/i],
-          ['lang-css', /^style\s*=\s*([^\"\'>\s]+)/i]
-        ]),
-      ['in.tag']);
-    registerLangHandler(
-      createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);
-    registerLangHandler(sourceDecorator({
-      'keywords': CPP_KEYWORDS,
-      'hashComments': true,
-      'cStyleComments': true,
-      'types': C_TYPES
-    }), ['c', 'cc', 'cpp', 'cxx', 'cyc', 'm']);
-    registerLangHandler(sourceDecorator({
-      'keywords': 'null,true,false'
-    }), ['json']);
-    registerLangHandler(sourceDecorator({
-      'keywords': CSHARP_KEYWORDS,
-      'hashComments': true,
-      'cStyleComments': true,
-      'verbatimStrings': true,
-      'types': C_TYPES
-    }), ['cs']);
-    registerLangHandler(sourceDecorator({
-      'keywords': JAVA_KEYWORDS,
-      'cStyleComments': true
-    }), ['java']);
-    registerLangHandler(sourceDecorator({
-      'keywords': SH_KEYWORDS,
-      'hashComments': true,
-      'multiLineStrings': true
-    }), ['bash', 'bsh', 'csh', 'sh']);
-    registerLangHandler(sourceDecorator({
-      'keywords': PYTHON_KEYWORDS,
-      'hashComments': true,
-      'multiLineStrings': true,
-      'tripleQuotedStrings': true
-    }), ['cv', 'py', 'python']);
-    registerLangHandler(sourceDecorator({
-      'keywords': PERL_KEYWORDS,
-      'hashComments': true,
-      'multiLineStrings': true,
-      'regexLiterals': 2  // multiline regex literals
-    }), ['perl', 'pl', 'pm']);
-    registerLangHandler(sourceDecorator({
-      'keywords': RUBY_KEYWORDS,
-      'hashComments': true,
-      'multiLineStrings': true,
-      'regexLiterals': true
-    }), ['rb', 'ruby']);
-    registerLangHandler(sourceDecorator({
-      'keywords': JSCRIPT_KEYWORDS,
-      'cStyleComments': true,
-      'regexLiterals': true
-    }), ['javascript', 'js', 'ts', 'typescript']);
-    registerLangHandler(sourceDecorator({
-      'keywords': COFFEE_KEYWORDS,
-      'hashComments': 3,  // ### style block comments
-      'cStyleComments': true,
-      'multilineStrings': true,
-      'tripleQuotedStrings': true,
-      'regexLiterals': true
-    }), ['coffee']);
-    registerLangHandler(
-      createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']);
-  }
+
   if (!(extension && langHandlerRegistry.hasOwnProperty(extension))) {
     // Treat it as markup if the first non whitespace character is a < and
     // the last non-whitespace character is a >.
-    extension = (/^\s*</).test(source)
+    extension = ((/^\s*</).test(source))
       ? 'default-markup'
       : 'default-code';
   }
@@ -1198,7 +1096,6 @@ function applyDecorator(job) {
     job.sourceCode = source;
     job.spans = sourceAndSpans.spans;
     job.basePos = 0;
-
     // Apply the appropriate language handler
     langHandlerForExtension(opt_langExtension, source)(job);
     // Integrate the decorations and tags back into the source code,
@@ -1212,6 +1109,8 @@ function applyDecorator(job) {
 }
 
 export function $prettyPrintOne(sourceCodeHtml, opt_langExtension, opt_numberLines) {
+
+  init();
 
   var nl = opt_numberLines || false;
 
@@ -1407,3 +1306,111 @@ function $prettyPrint(opt_whenDone, opt_root) {
 
   doWork();
 };
+
+export function init() {
+  registerLangHandler(decorateSource, ['default-code']);
+  registerLangHandler(
+    createSimpleLexer(
+      [],
+      [
+        [PR_PLAIN, /^[^<?]+/],
+        [PR_DECLARATION, /^<!\w[^>]*(?:>|$)/],
+        [PR_COMMENT, /^<\!--[\s\S]*?(?:-\->|$)/],
+        // Unescaped content in an unknown language
+        ['lang-', /^<\?([\s\S]+?)(?:\?>|$)/],
+        ['lang-', /^<%([\s\S]+?)(?:%>|$)/],
+        [PR_PUNCTUATION, /^(?:<[%?]|[%?]>)/],
+        ['lang-', /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i],
+        // Unescaped content in javascript.  (Or possibly vbscript).
+        ['lang-js', /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i],
+        // Contains unescaped stylesheet content
+        ['lang-css', /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i],
+        ['lang-in.tag', /^(<\/?[a-z][^<>]*>)/i]
+      ]),
+    ['default-markup', 'htm', 'html', 'mxml', 'xhtml', 'xml', 'xsl']);
+  registerLangHandler(
+    createSimpleLexer(
+      [
+        [PR_PLAIN, /^[\s]+/, null, ' \t\r\n'],
+        [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
+      ],
+      [
+        [PR_TAG, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i],
+        [PR_ATTRIB_NAME, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i],
+        ['lang-uq.val', /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/],
+        [PR_PUNCTUATION, /^[=<>\/]+/],
+        ['lang-js', /^on\w+\s*=\s*\"([^\"]+)\"/i],
+        ['lang-js', /^on\w+\s*=\s*\'([^\']+)\'/i],
+        ['lang-js', /^on\w+\s*=\s*([^\"\'>\s]+)/i],
+        ['lang-css', /^style\s*=\s*\"([^\"]+)\"/i],
+        ['lang-css', /^style\s*=\s*\'([^\']+)\'/i],
+        ['lang-css', /^style\s*=\s*([^\"\'>\s]+)/i]
+      ]),
+    ['in.tag']);
+  registerLangHandler(
+    createSimpleLexer([], [[PR_ATTRIB_VALUE, /^[\s\S]+/]]), ['uq.val']);
+  registerLangHandler(sourceDecorator({
+    'keywords': CPP_KEYWORDS,
+    'hashComments': true,
+    'cStyleComments': true,
+    'types': C_TYPES
+  }), ['c', 'cc', 'cpp', 'cxx', 'cyc', 'm']);
+  registerLangHandler(sourceDecorator({
+    'keywords': 'null,true,false'
+  }), ['json']);
+  registerLangHandler(sourceDecorator({
+    'keywords': CSHARP_KEYWORDS,
+    'hashComments': true,
+    'cStyleComments': true,
+    'verbatimStrings': true,
+    'types': C_TYPES
+  }), ['cs']);
+  registerLangHandler(sourceDecorator({
+    'keywords': JAVA_KEYWORDS,
+    'cStyleComments': true
+  }), ['java']);
+  registerLangHandler(sourceDecorator({
+    'keywords': SH_KEYWORDS,
+    'hashComments': true,
+    'multiLineStrings': true
+  }), ['bash', 'bsh', 'csh', 'sh']);
+  registerLangHandler(sourceDecorator({
+    'keywords': PYTHON_KEYWORDS,
+    'hashComments': true,
+    'multiLineStrings': true,
+    'tripleQuotedStrings': true
+  }), ['cv', 'py', 'python']);
+  registerLangHandler(sourceDecorator({
+    'keywords': PERL_KEYWORDS,
+    'hashComments': true,
+    'multiLineStrings': true,
+    'regexLiterals': 2  // multiline regex literals
+  }), ['perl', 'pl', 'pm']);
+  registerLangHandler(sourceDecorator({
+    'keywords': RUBY_KEYWORDS,
+    'hashComments': true,
+    'multiLineStrings': true,
+    'regexLiterals': true
+  }), ['rb', 'ruby']);
+  registerLangHandler(sourceDecorator({
+    'keywords': JSCRIPT_KEYWORDS,
+    'cStyleComments': true,
+    'regexLiterals': true
+  }), ['javascript', 'js', 'ts', 'typescript']);
+  registerLangHandler(sourceDecorator({
+    'keywords': COFFEE_KEYWORDS,
+    'hashComments': 3,  // ### style block comments
+    'cStyleComments': true,
+    'multilineStrings': true,
+    'tripleQuotedStrings': true,
+    'regexLiterals': true
+  }), ['coffee']);
+  registerLangHandler(
+    createSimpleLexer([], [[PR_STRING, /^[\s\S]+/]]), ['regex']);
+}
+
+// class Prettify{
+//   {
+
+//   }
+// }
