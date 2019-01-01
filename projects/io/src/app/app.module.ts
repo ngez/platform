@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app.routing';
 import { MatListModule } from '@angular/material/list';
 import { NgEzNestedNavModule } from '@ngez/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgEzInViewportModule } from '../../../core/src/in-viewport';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatListModule,
     AppRoutingModule,
-    NgEzNestedNavModule
+    NgEzNestedNavModule,
+    NgEzInViewportModule
   ],
   providers: [],
   bootstrap: [AppComponent]

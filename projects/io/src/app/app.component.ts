@@ -46,15 +46,19 @@ export class AppComponent {
       map(() => this.media.isActive('gt-sm') ? 'side' : 'over')
     );
 
-    this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(e => {
-        const isLarge = this.media.isActive('gt-sm');
-        if (isLarge && !this.snav.opened)
-          this.snav.open();
-        if (!isLarge && this.snav.opened)
-          this.snav.close();
-      });
+    // this.router.events
+    //   .pipe(filter(e => e instanceof NavigationEnd))
+    //   .subscribe(e => {
+    //     const isLarge = this.media.isActive('gt-sm');
+    //     if (isLarge && !this.snav.opened)
+    //       this.snav.open();
+    //     if (!isLarge && this.snav.opened)
+    //       this.snav.close();
+    //   });
+  }
+
+  onChange(e){
+    console.log(e)
   }
 
   // setOptions(){

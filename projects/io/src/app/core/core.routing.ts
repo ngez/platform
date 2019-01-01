@@ -19,6 +19,9 @@ const routes: Routes = [{
 }, {
     path: 'clipboard',
     loadChildren: './pages/clipboard/clipboard.module#ClipboardModule'
+}, {
+    path: 'lazy-image',
+    loadChildren: './pages/lazy-image/lazy-image.module#LazyImageModule'
 }];
 
 @NgModule({

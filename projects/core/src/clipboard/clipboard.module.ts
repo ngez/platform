@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { WINDOW_PROVIDERS } from "./window.service";
+import { WINDOW_PROVIDERS } from "../window";
 import { NgEzClipboardService } from "./clipboard.service";
 import { NgEzClipboardDirective } from "./clipboard.directive";
 

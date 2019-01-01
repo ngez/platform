@@ -1,6 +1,6 @@
 import { Injectable, Optional, PLATFORM_ID, Inject } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { WINDOW } from "./window.service";
+import { WINDOW } from "../window";
 
 @Injectable()
 export class NgEzClipboardService{
