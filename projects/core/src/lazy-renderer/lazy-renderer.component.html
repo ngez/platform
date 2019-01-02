@@ -1,0 +1,4 @@
+<div *ngIf="!shouldRender" class="ngez-lazy-renderer-content" ngezInViewport [config]="config" (inViewportChange)="onChange($event)"></div>
+<ng-container *ngIf="shouldRender">
+    <ng-container *ngTemplateOutlet="template"></ng-container>
+</ng-container>

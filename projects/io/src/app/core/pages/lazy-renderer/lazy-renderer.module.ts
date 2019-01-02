@@ -1,16 +1,16 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { LazyImagePage } from "./lazy-image.page";
+import { LazyRendererPage } from "./lazy-renderer.page";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CommonModule } from "@angular/common";
-import { NgEzCodePrettifyModule } from '@ngez/core';
+import { NgEzCodePrettifyModule, NgEzLazyRendererModule } from '@ngez/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgEzLazyLoadModule } from "../../../../../../core/src/lazy-load";
 import { NgEzInViewportModule } from "../../../../../../core/src/in-viewport";
+import { TestComponent } from "./test.component";
 
 const routes : Routes = [{
     path: '',
-    component: LazyImagePage
+    component: LazyRendererPage
 }];
 
 @NgModule({
@@ -19,9 +19,9 @@ const routes : Routes = [{
         MatProgressSpinnerModule,
         FlexLayoutModule,
         RouterModule.forChild(routes), 
-        NgEzLazyLoadModule, 
+        NgEzLazyRendererModule, 
         NgEzInViewportModule,
         CommonModule],
-    declarations: [LazyImagePage]
+    declarations: [LazyRendererPage, TestComponent]
 })
-export class LazyImageModule{}
+export class LazyRendererModule{}

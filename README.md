@@ -5,3 +5,7 @@ A collection of minimalistic, easy-to-use and fully customizable Angular compone
 ## Documentation
 
 Checkout the [docs](https://ngez-platform.firebaseapp.com/#/core)
+
+## Changelog
+
+[core](https://github.com/ngez/platform/blob/master/projects/core/CHANGELOG.md)

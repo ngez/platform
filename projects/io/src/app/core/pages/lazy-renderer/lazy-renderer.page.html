@@ -1,0 +1,57 @@
+<h1 class="mat-headline">Lazy Renderer</h1>
+<p class="mat-body">
+    Html and components are rendered until they've actually entered the viewport.
+</p>
+<h2 class="mat-title">Features</h2>
+<ul>
+    <li>Lazy load images.</li>
+    <li>Components are instantiated until they've entered the viewport, thus delaying their lifecycle hooks.</li>
+</ul>
+<h2 class="mat-title">Demo</h2>
+<p class="mat-body">
+    Open your devtools and scroll down. Notice how the component's ngOnInit method is called until it enters the viewport. Go to the network tab and the image was also lazily loaded.
+</p>
+<div style="height: 1000px"></div>
+<ngez-lazy-renderer>
+    <ng-template>
+        <img [src]="image" alt="">
+        <div>
+            <test></test>
+        </div>
+    </ng-template>
+</ngez-lazy-renderer>
+<h2 class="mat-title">Import</h2>
+<p class="mat-body">
+    Begin by importing the module like this:
+</p>
+<pre>
+    import {{'{'}} NgEzLazyRendererModule {{'}'}} from '@ngez/core';
+</pre>
+<h2 class="mat-title">Usage</h2>
+<ngez-code-prettify [config]="code1">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>
+<br>
+<ngez-code-prettify [config]="code2">
+    <ngez-code-loading>
+        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner color="accent" diameter="50"></mat-spinner>
+        </div>
+    </ngez-code-loading>
+    <ngez-code-loading-error >
+        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+            <span style="color: white">Something went wrong while loading the code.</span>
+            <button ngezReload>Reload</button>
+        </div>
+    </ngez-code-loading-error>
+</ngez-code-prettify>

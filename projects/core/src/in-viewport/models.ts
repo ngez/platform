@@ -1,9 +1,8 @@
 export interface NgEzInViewportConfig{
-    querySelector?: string;
     offset?: NgEzViewportOffsetConfig
 }
 
-interface NgEzViewportOffsetConfig{
+export interface NgEzViewportOffsetConfig{
     top?: number;
     bottom?: number;
     left?: number;
@@ -19,9 +18,7 @@ export interface NgEzInViewportEvent{
     all: boolean;
 }
 
-export const defaultConfig: NgEzInViewportConfig = {
-    querySelector: null
-}
+export const defaultConfig: NgEzInViewportConfig = {}
 
 export const defaultOffsetConfig: NgEzViewportOffsetConfig = {
     top: 0,

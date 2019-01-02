@@ -9,14 +9,15 @@ import {
     TemplateRef, 
     OnDestroy, 
     Output,
-    EventEmitter} from "@angular/core";
+    EventEmitter } from "@angular/core";
 import { WINDOW } from "../window";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { NgEzInViewportConfig, defaultConfig, defaultOffsetConfig, NgEzInViewportEvent } from "./models";
 import { fromEvent, merge, Subscription, of } from "rxjs";
 
 @Directive({
-    selector: '[ngezInViewport]'
+    selector: '[ngezInViewport]',
+    exportAs: 'ngezInViewport'
 })
 export class NgEzInViewportDirective implements OnInit, OnDestroy{
 
@@ -51,24 +52,13 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
         if(!isPlatformBrowser(this.platformId)) return;
 
         this.container = this.getClosestScrollableParent(this.element.nativeElement);
-
-        // const container = this.config.querySelector 
-        //     ? document.querySelector(this.config.querySelector)
-        //     : null;
-
-        // if(this.config.querySelector && !container)
-        //     console.warn(`No element found with query selector: ${this.config.querySelector}`);
-        
-        // this.container = container;
         
         //Check on scroll, window resize and oninit
         this.subscription = merge(
-            fromEvent(this.isDocumentScrollableContainer ? this.document : this.container, 'scroll'), 
+            fromEvent(this.isDocumentTheScrollableContainer() ? this.document : this.container, 'scroll'), 
             fromEvent(this.window, 'resize'),
             of(null))
                 .subscribe(() => this.checkVisibility());
-
-        
     }
 
     ngOnDestroy() {
@@ -79,6 +69,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
 
     get config(): NgEzInViewportConfig {
         const { offset = {}, ...config } = this._config || {};
+
         return { 
             ...defaultConfig, 
             ...config, 
@@ -92,6 +83,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
     checkVisibility(){
         const previous = this.latest;
         const current = this.calculateVisibility();
+        // console.log(previous, current)
 
         const hasChanged = previous.top != current.top
             || previous.bottom != current.bottom
@@ -112,13 +104,13 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
 
         const containerRect = this.container.getBoundingClientRect();
 
-        const top = elementRect.top - (this.isDocumentScrollableContainer 
+        const top = elementRect.top - (this.isDocumentTheScrollableContainer()
             ? 0
             : containerRect.top);
 
         const bottom = top + height;
 
-        const left = elementRect.left - (this.isDocumentScrollableContainer 
+        const left = elementRect.left - (this.isDocumentTheScrollableContainer()
             ? 0
             : containerRect.left);
 
@@ -162,7 +154,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
         return this.window.getComputedStyle(node).getPropertyValue(style);
     }
 
-    private isDocumentScrollableContainer(){
+    private isDocumentTheScrollableContainer(){
         return this.document.documentElement === this.container;
     }
 }
