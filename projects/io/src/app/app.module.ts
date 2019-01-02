@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app.routing';
 import { MatListModule } from '@angular/material/list';
 import { NgEzNestedNavModule } from '@ngez/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgEzInViewportModule } from '../../../core/src/in-viewport';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { NgEzInViewportModule } from '../../../core/src/in-viewport';
     MatListModule,
     AppRoutingModule,
     NgEzNestedNavModule,
-    NgEzInViewportModule
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -22,6 +22,10 @@ const routes: Routes = [{
 }, {
     path: 'lazy-renderer',
     loadChildren: './pages/lazy-renderer/lazy-renderer.module#LazyRendererModule'
+},
+{
+    path: 'in-viewport',
+    loadChildren: './pages/in-viewport/in-viewport.module#InViewportModule'
 }];
 
 @NgModule({

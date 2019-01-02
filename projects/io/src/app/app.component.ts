@@ -1,11 +1,13 @@
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { NgEzAutocompleteConfig, NgEzAutocompleteDirective } from '@ngez/core'
 import { debounceTime, map, tap, filter, switchMap } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router, NavigationEnd } from '@angular/router';
+import { MatIconRegistry } from '@angular/material';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -22,24 +24,11 @@ export class AppComponent {
     exact: true
   };
 
-  constructor(public media: ObservableMedia, private router: Router) { }
-
-  // form: FormGroup;
-
-  // options;
-
-  // config: NgEzAutocompleteConfig = {
-  //   labelExtractor: option => option.username
-  // }
-
-  // @ViewChild(NgEzAutocompleteDirective) autocomplete: NgEzAutocompleteDirective;
-
-  // constructor(fb: FormBuilder){
-  //   this.setOptions();
-  //   this.form = fb.group({
-  //     autocomplete: null
-  //   })
-  // }
+  constructor(public media: ObservableMedia, private router: Router, private sanitizer: DomSanitizer, iconRegistry: MatIconRegistry) {
+    const { icon, iconName, prefix } = faGithub;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${icon[0]} ${icon[1]}"><path d="${icon[4]}" /></svg>`;
+    iconRegistry.addSvgIconLiteralInNamespace(prefix, iconName, sanitizer.bypassSecurityTrustHtml(svg))
+  }
 
   ngOnInit() {
     this.mode$ = this.media.asObservable().pipe(
@@ -57,21 +46,4 @@ export class AppComponent {
     //   });
   }
 
-  onChange(e){
-    console.log(e)
-  }
-
-  // setOptions(){
-  //   const options = [];
-  //   for(let i = 0; i < 100; i++){
-  //     const user = {
-  //       id: faker.random.uuid(),
-  //       username: faker.internet.userName(),
-  //       avatar: faker.internet.avatar()
-  //     }
-  //     options.push(user)
-  //   }
-
-  //   this.options = options;
-  // }
 }

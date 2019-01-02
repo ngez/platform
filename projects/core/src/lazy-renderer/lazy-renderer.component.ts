@@ -1,5 +1,5 @@
 import { Component, ElementRef, ContentChild, TemplateRef, Input } from "@angular/core";
-import { NgEzInViewportEvent } from "../in-viewport";
+import { NgEzInViewportEvent } from "../in-viewport/models";
 import { NgEzLazyRendererConfig } from "./models";
 
 @Component({

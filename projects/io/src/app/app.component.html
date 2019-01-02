@@ -1,9 +1,15 @@
 <div fxLayout="column" class="app-container">
-    <mat-toolbar class="header" fxLayout="row" color="primary">
-        <button (click)="snav.toggle()" mat-icon-button>
-            <mat-icon aria-label="Menu button">menu</mat-icon>
-        </button>
-        NgEz
+    <mat-toolbar class="header" fxLayout="row" fxLayoutAlign="space-between center" color="primary">
+        <div>
+            <button (click)="snav.toggle()" mat-icon-button>
+                <mat-icon aria-label="Menu button">menu</mat-icon>
+            </button>
+            NgEz
+        </div>
+        <a href="https://github.com/ngez/platform" color="primary" mat-flat-button>
+            <mat-icon svgIcon="fab:github" aria-label="Github button"></mat-icon>
+            GitHub
+        </a>
     </mat-toolbar>
 
     <mat-sidenav-container fxFlex>
@@ -19,6 +25,7 @@
                             <a class="nav-list-item" routerLink="/core/lazy-renderer" routerLinkActive="active" [routerLinkActiveOptions]="routerLinkOptions">Lazy Renderer</a>
                         </ngez-nav-list>
                         <ngez-nav-list title="Utility">
+                            <a class="nav-list-item" routerLink="/core/in-viewport" routerLinkActive="active">In Viewport</a>
                             <a class="nav-list-item" routerLink="/core/outside" routerLinkActive="active">Outside Click</a>
                             <a class="nav-list-item" routerLink="/core/clipboard" routerLinkActive="active">Clipboard</a>
                         </ngez-nav-list>
@@ -31,11 +38,6 @@
                 <div fxFlex="1 0 auto" class="content-container">
                     <router-outlet></router-outlet>
                 </div>
-                <!-- <div fxLayout="row">
-                    <mat-toolbar style="height: auto; font-size: 14px; font-weight: normal" color="primary">
-                        Tested on Chrome, Firefox and IE11.
-                    </mat-toolbar>
-                </div> -->
             </div>
         </mat-sidenav-content>
     </mat-sidenav-container>

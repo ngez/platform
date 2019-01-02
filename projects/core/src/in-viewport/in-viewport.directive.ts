@@ -10,7 +10,7 @@ import {
     OnDestroy, 
     Output,
     EventEmitter } from "@angular/core";
-import { WINDOW } from "../window";
+import { WINDOW } from "../window/window.service";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { NgEzInViewportConfig, defaultConfig, defaultOffsetConfig, NgEzInViewportEvent } from "./models";
 import { fromEvent, merge, Subscription, of } from "rxjs";
@@ -58,7 +58,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
             fromEvent(this.isDocumentTheScrollableContainer() ? this.document : this.container, 'scroll'), 
             fromEvent(this.window, 'resize'),
             of(null))
-                .subscribe(() => this.checkVisibility());
+                .subscribe(() => this.check());
     }
 
     ngOnDestroy() {
@@ -80,10 +80,9 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
         };
     }
 
-    checkVisibility(){
+    check(): NgEzInViewportEvent{
         const previous = this.latest;
         const current = this.calculateVisibility();
-        // console.log(previous, current)
 
         const hasChanged = previous.top != current.top
             || previous.bottom != current.bottom
@@ -94,6 +93,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
             this.inViewportChange.emit(current);
 
         this.latest = current;
+        return current;
     }
 
     private calculateVisibility(): NgEzInViewportEvent{
@@ -136,7 +136,7 @@ export class NgEzInViewportDirective implements OnInit, OnDestroy{
 
     private getClosestScrollableParent(node: Node) {
         return !node || node === this.document.body
-            ? document.documentElement
+            ? this.document.documentElement
             : this.isScrollable(node)
                 ? node 
                 : this.getClosestScrollableParent(node.parentNode);

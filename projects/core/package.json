@@ -1,6 +1,6 @@
 {
   "name": "@ngez/core",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services",
   "keywords": [
     "ngez",
@@ -16,7 +16,12 @@
     "nested-nav",
     "outside",
     "click",
-    "minimalistic"
+    "minimalistic",
+    "in-viewport",
+    "viewport",
+    "lazy",
+    "load",
+    "lazy-renderer"
   ],
   "repository": {
     "type": "git",
