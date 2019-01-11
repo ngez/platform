@@ -1,4 +1,9 @@
-<pre>{{form.get('c1').errors | json}}</pre>
-<form [formGroup]="form">
-    <button formControlName="c1" ngezFileInput [config]="config">Pick a file</button>
+<!-- <pre>{{f    | json}}</pre> -->
+<!-- <form [formGroup]="form">
+    <button formControlName="c1" ngezFileInput multiple >Pick a file</button>
+</form> -->
+<br>
+<form #f="ngForm" ngezEquals c1="password" c2="confirmPassword">
+<input name="f1" [(ngModel)]="f1" multiple accept=".mp3" ngezFileInput [ngezMaxSize]="10 | ngezBytes:'megabyte'" />
+<input [(ngModel)]="cp" name="confirmPassword"/>
 </form>

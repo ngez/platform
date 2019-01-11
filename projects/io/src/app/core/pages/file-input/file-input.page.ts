@@ -1,8 +1,7 @@
 import { Component } from "@angular/core";
-import { NgEzCodePrettifyConfig } from "@ngez/core";
+import { NgEzCodePrettifyConfig, NgEzByteUtils } from "@ngez/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { NgEzFileInputConfig } from "../../../../../../core/src/file-input/models";
-import { NgEzValidators } from "../../../../../../core/src/validators";
+import { NgEzValidators } from "../../../../../../core/src/forms";
 
 @Component({
     selector: 'file-input',
@@ -12,9 +11,9 @@ export class FileInputPage{
 
     form: FormGroup;
 
-    config: NgEzFileInputConfig = {
-        multiple: true,
-    }
+    f1;
+
+    f2;
 
     code1: NgEzCodePrettifyConfig = {
         language: 'html',
@@ -34,8 +33,13 @@ export class FileInputPage{
 
     constructor(fb: FormBuilder){
         this.form = fb.group({
-            c1: [null, [NgEzValidators.fileType('.jpg, .jpeg, image/*, application/msword,video/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document'), NgEzValidators.fileSize(1, 'megabyte')]]
-        });
+            url: ['', NgEzValidators.url],
+            password: [''],
+            confirmPassword: [''],
+            c1: [null, [NgEzValidators.fileType('.jpg, .jpeg, image/*, application/msword,video/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document'), NgEzValidators.maxSize(NgEzByteUtils.convert(1, 'megabyte'))]]
+        }, {validators: NgEzValidators.equals('password', 'confirmPassword')});
+
+        this.form.valueChanges.subscribe(value =>console.log(value))
     }
 
 }

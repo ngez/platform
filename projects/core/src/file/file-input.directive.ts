@@ -1,21 +1,21 @@
-import { 
-    Directive, 
-    ElementRef, 
-    OnInit, 
-    Renderer2, 
-    Optional, 
-    Inject, 
-    PLATFORM_ID, 
-    OnDestroy, 
-    HostListener, 
-    Input, 
+import {
+    Directive,
+    ElementRef,
+    OnInit,
+    Renderer2,
+    Optional,
+    Inject,
+    PLATFORM_ID,
+    OnDestroy,
+    HostListener,
+    Input,
     forwardRef,
     Output,
     EventEmitter,
     OnChanges,
-    SimpleChanges} from "@angular/core";
+    SimpleChanges
+} from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { NgEzFileInputConfig } from "./models";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Subscription, fromEvent } from "rxjs";
 
@@ -30,15 +30,21 @@ import { Subscription, fromEvent } from "rxjs";
 })
 export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
 
-    @Input() config: NgEzFileInputConfig;
+    @Input() accept: string;
 
-    @Output() selected = new EventEmitter<File | FileList>();
+    @Input() set multiple(multiple){
+        this._multiple = multiple;
+    };
+
+    @Output() selected = new EventEmitter<File | File[]>();
 
     onChange: Function;
 
     onTouched: Function;
 
     isDisabled = false;
+
+    private _multiple: any;
 
     private fileInput: HTMLInputElement;
 
@@ -50,47 +56,46 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
         private element: ElementRef,
         @Inject(PLATFORM_ID) private platformId: Object,
         @Optional() @Inject(DOCUMENT) private document: any,
-        private renderer: Renderer2) {}
+        private renderer: Renderer2) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (!isPlatformBrowser(this.platformId)) return;
-        
-        const current: NgEzFileInputConfig = changes.config.currentValue;
-        const previous: NgEzFileInputConfig = changes.config.previousValue;
 
-        if((current && !previous) 
-            || (current && previous && current.multiple != previous.multiple) 
-            || (!current && previous && previous.multiple)
-            || (current && previous && current.accept != previous.accept)
-            || (!current && previous && previous.accept))
-                this.appendFileInput();
+        const { currentValue: accept = null, previousValue: prevAccept = null } = changes.accept || {};
+        const { currentValue: multiple = null, previousValue: prevMultiple = null } = changes.multiple || {};
+
+        if ((multiple != prevMultiple) || (accept != prevAccept))
+            this.appendFileInput();
     }
 
     ngOnInit() {
         if (!isPlatformBrowser(this.platformId)) return;
 
-        if(!this.fileInput)
+        if (!this.fileInput)
             this.appendFileInput();
-        
-        this.subscription = fromEvent(this.element.nativeElement, this.isInputOrTextarea() ? 'focus': 'click')
+
+        this.subscription = fromEvent(this.element.nativeElement, this.isInputOrTextarea() ? 'focus' : 'click')
             .subscribe(e => this.open());
     }
 
     ngOnDestroy() {
-        if(this.subscription)
+        if (this.subscription)
             this.subscription.unsubscribe();
         this.removeFileInput();
     }
 
     @HostListener('blur')
-    private onBlur(){
-        if(this.onTouched)
+    private onBlur() {
+        if (this.onTouched)
             this.onTouched();
     }
 
     open() {
-        if(this.isInputOrTextarea())
+        if(this.isDisabled) return;
+
+        if (this.isInputOrTextarea())
             this.element.nativeElement.blur();
+            
         this.fileInput.click();
     }
 
@@ -99,10 +104,18 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
     }
 
     writeValue(value: any): void {
-        if(value && !(value instanceof File || value instanceof FileList))
-            console.warn(value, 'is not an instance of File or FileList');
-        else
-            this.setValue(value);
+        let file: File | File[] = null;
+
+        if (value) {
+            if (value instanceof File || (Array.isArray(value) && value.every(value => value instanceof File)))
+                file = value;
+            else if (value instanceof FileList)
+                file = Array.from(value);
+            else
+                return console.warn('Expected value of type File, FileList or File[], instead got: ', value);
+        }
+
+        this.setValue(value);
     }
 
     registerOnChange(fn: (value: any) => {}): void {
@@ -118,20 +131,21 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
         this.isDisabled = isDisabled;
     }
 
-    private setValue(value: File | FileList){
+    private setValue(value: File | File[]) {
         const text = value ? this.getText(value) : '';
         this.renderer.setProperty(this.element.nativeElement, 'value', text);
     }
 
     private setValueAndUpdate(value: File | FileList) {
-        if(this.onChange)
-            this.onChange(value);
-        this.setValue(value);
-        this.selected.emit(value);
+        const fileValue = value instanceof FileList ? Array.from(value) : value;
+        if (this.onChange)
+            this.onChange(fileValue);
+        this.setValue(fileValue);
+        this.selected.emit(fileValue);
     }
 
     private appendFileInput() {
-        if(this.fileInput)
+        if (this.fileInput)
             this.clear();
 
         this.removeFileInput();
@@ -140,7 +154,7 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
         this.renderer.appendChild(this.document.body, this.fileInput);
         this.listener = this.renderer.listen(this.fileInput, 'change', e => {
             const files: FileList = e.target.files;
-            const value = this.config && this.config.multiple ? files : files.item(0);
+            const value = this.multiple ? files : files.item(0);
             this.setValueAndUpdate(value);
         });
     }
@@ -150,26 +164,31 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
         this.renderer.setAttribute(input, 'type', 'file');
         this.renderer.setAttribute(input, 'aria-hidden', 'true');
         this.renderer.setProperty(input, 'hidden', true);
-        this.renderer.setProperty(input, 'multiple', this.config && this.config.multiple ? true : false);
-        if(this.config && this.config.accept)
-            this.renderer.setAttribute(input, 'accept', this.config.accept);
+        this.renderer.setProperty(input, 'multiple', this.multiple ? true : false);
+        if (this.accept)
+            this.renderer.setAttribute(input, 'accept', this.accept);
         return input;
     }
 
     private removeFileInput() {
         if (this.fileInput)
             this.renderer.removeChild(this.document.body, this.fileInput);
-        if(this.listener)
+        if (this.listener)
             this.listener();
     }
 
-    private getText(value: File | FileList): string {
-        const files = value instanceof FileList ? Array.from(value) : [value];
-        return files.reduce((text, file, index) => `${text}${index > 0 ? ', ': ''}${file.name}`, '');
+    private getText(value: File | File[]): string {
+        const files = value instanceof File ? [value] : value;
+        return files.reduce((text, file, index) => `${text}${index > 0 ? ', ' : ''}${file.name}`, '');
     }
 
     private isInputOrTextarea(): boolean {
         const element = this.element.nativeElement;
         return element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement;
+    }
+
+    get multiple(){
+        const multiple = this._multiple;
+        return multiple || multiple === '' ? true : false;
     }
 }

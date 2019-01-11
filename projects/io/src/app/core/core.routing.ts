@@ -26,7 +26,7 @@ const routes: Routes = [{
     path: 'in-viewport',
     loadChildren: './pages/in-viewport/in-viewport.module#InViewportModule'
 }, {
-    path: 'file',
+    path: 'file-input',
     loadChildren: './pages/file-input/file-input.module#FileInputModule'
 }];
 

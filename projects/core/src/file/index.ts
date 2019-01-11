@@ -1,3 +1,3 @@
 export * from './file-input.directive';
-export * from './file-input.module';
+export * from './file.module';
 export * from './models';
