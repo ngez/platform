@@ -1,0 +1,11 @@
+<form ngezEquals c1="password" c2="confirmPassword">
+    <input name="password" [(ngModel)]="password" />
+    <input name="confirmPassword" [(ngModel)]="confirmPassword" />
+    <input name="url" [(ngModel)]="url" ngezUrl />
+    <!--Assuming you already imported NgEzFileModule to use the ngezFileInput directive -->
+    <input name="jpgFile" [(ngModel)]="jpgFile" ngezFileInput accept=".jpg" ngezFileType />
+    <!-- ngezMaxSize expects the amount in bytes. Use the bytes pipe to easily make the conversion -->
+    <input name="maxFileSize" [(ngModel)]="maxFileSize" ngezFileInput [ngezMaxSize]="1 | ngezBytes:'megabyte'" />
+    <!-- ngezTotalSize expects the amount in bytes. Use the bytes pipe to easily make the conversion -->
+    <input name="totalFileSize" [(ngModel)]="totalFileSize" ngezFileInput [ngezTotalSize]="10 | ngezBytes:'megabyte'" />
+</form>

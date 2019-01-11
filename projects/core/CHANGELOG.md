@@ -1,3 +1,8 @@
+# 1.2.0 (2019-01-11)
+### Features
+* Added **file-input** directive.
+* **forms**: added equals, url, fileType, maxSize and totalSize validators.
+
 # 1.1.0 (2019-01-02)
 ### Features
 * Added **lazy-renderer** component.

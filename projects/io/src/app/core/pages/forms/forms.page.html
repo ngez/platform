@@ -1,22 +1,19 @@
-<h1 class="mat-headline">File Input</h1>
+<h1 class="mat-headline">Forms</h1>
 <p class="mat-body">
-    Turn any element into a File Input. The control's value will be the actual File or File[].
+    Custom validators for your forms. Supports FormsModule and ReactiveFormsModule.
 </p>
-<h2 class="mat-title">Features</h2>
+<h2 class="mat-title">Validators</h2>
 <ul>
-    <li>Works with FormsModule and ReactiveFormsModule.</li>
-    <li>Same options as regular file input. Accept only certain file types and select multiple files.</li>
+    <li>equals: The value of two form controls must be equal.</li>
+    <li>url: The value must be a valid url.</li>
+    <li>fileType: The file's type (mime type or extension) must be valid.</li>
+    <li>maxSize: The file's size must be valid.</li>
+    <li>totalSize: The sum of all file sizes must be valid.</li>
 </ul>
-<h2 class="mat-title">Demo</h2>
-<form [formGroup]="form">
-    <input placeholder="Pick a .jpg on focus" ngezFileInput accept=".jpg">
-    <br><br><br>
-    <button ngezFileInput multiple >Pick multiple files on click</button>
-</form>
-<h2 class="mat-title">Import</h2>
+<h2 class="mat-title">Import (ignore for ReactiveFormsModule)</h2>
 <p class="mat-body">Import the module like this:</p>
 <pre>
-    import {{'{'}} NgEzFileModule {{'}'}} from '@ngez/core';
+    import {{'{'}} NgEzFormsModule {{'}'}} from '@ngez/core';
 </pre>
 <h2 class="mat-title">Usage</h2>
 <ngez-code-prettify [config]="code1">

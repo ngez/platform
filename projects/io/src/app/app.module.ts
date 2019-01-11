@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { NgEzNestedNavModule } from '@ngez/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatDividerModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatListModule,
     AppRoutingModule,
     NgEzNestedNavModule,
+    MatDividerModule,
     FontAwesomeModule
   ],
   providers: [],

@@ -28,6 +28,9 @@ const routes: Routes = [{
 }, {
     path: 'file-input',
     loadChildren: './pages/file-input/file-input.module#FileInputModule'
+}, {
+    path: 'forms',
+    loadChildren: './pages/forms/forms.module#FormsModule'
 }];
 
 @NgModule({

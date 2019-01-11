@@ -1,6 +1,6 @@
 {
   "name": "@ngez/core",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services",
   "keywords": [
     "ngez",
@@ -21,7 +21,11 @@
     "viewport",
     "lazy",
     "load",
-    "lazy-renderer"
+    "lazy-renderer",
+    "forms",
+    "validators",
+    "file",
+    "file-input"
   ],
   "repository": {
     "type": "git",
