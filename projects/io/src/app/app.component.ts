@@ -1,7 +1,7 @@
 import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { debounceTime, map, tap, filter, switchMap } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ObservableMedia } from '@angular/flex-layout';
+import { MediaObserver } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router, NavigationEnd } from '@angular/router';
@@ -24,15 +24,15 @@ export class AppComponent {
     exact: true
   };
 
-  constructor(public media: ObservableMedia, private router: Router, private sanitizer: DomSanitizer, iconRegistry: MatIconRegistry) {
+  constructor(public observer: MediaObserver, private router: Router, private sanitizer: DomSanitizer, iconRegistry: MatIconRegistry) {
     const { icon, iconName, prefix } = faGithub;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${icon[0]} ${icon[1]}"><path d="${icon[4]}" /></svg>`;
     iconRegistry.addSvgIconLiteralInNamespace(prefix, iconName, sanitizer.bypassSecurityTrustHtml(svg))
   }
 
   ngOnInit() {
-    this.mode$ = this.media.asObservable().pipe(
-      map(() => this.media.isActive('gt-sm') ? 'side' : 'over')
+    this.mode$ = this.observer.media$.pipe(
+      map(() => this.observer.isActive('gt-sm') ? 'side' : 'over')
     );
 
     // this.router.events
