@@ -1,5 +1,5 @@
 import { Directive, forwardRef, Input, OnChanges, SimpleChanges, OnInit } from "@angular/core";
-import { Validator, AbstractControl, NG_VALIDATORS, ValidatorFn, Validators } from "@angular/forms";
+import { Validator, AbstractControl, NG_VALIDATORS, ValidatorFn, Validators, ValidationErrors } from "@angular/forms";
 import { NgEzValidators } from "./validators";
 
 @Directive({
@@ -35,7 +35,7 @@ export class NgEzEqualsValidator implements Validator, OnChanges, OnInit{
             this.createValidator();
     }
 
-    validate(control: AbstractControl){
+    validate(control: AbstractControl): ValidationErrors{
         return this.validator ? this.validator(control) : null;
     }
 

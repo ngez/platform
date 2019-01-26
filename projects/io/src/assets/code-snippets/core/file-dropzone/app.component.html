@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+    <div formControlName="files" ngezFileDropzone></div>
+    <p class="mat-body">
+        Dropped files:
+    </p>
+    <ul>
+        <li *ngFor="let file of form.value.files">
+            {{file.name}}
+            <button type="button" (click)="onRemove(file)">Remove</button>
+        </li>
+    </ul>
+</form>

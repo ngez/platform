@@ -1,5 +1,5 @@
 import { Directive, forwardRef, Input, SimpleChanges, OnInit, OnChanges } from "@angular/core";
-import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn } from "@angular/forms";
+import { NG_VALIDATORS, Validator, AbstractControl, ValidatorFn, ValidationErrors } from "@angular/forms";
 import { NgEzValidators } from "./validators";
 
 @Directive({
@@ -29,7 +29,7 @@ export class NgEzMaxSizeValidator implements Validator, OnInit, OnChanges{
             this.createValidator();
     }
 
-    validate(control: AbstractControl){
+    validate(control: AbstractControl): ValidationErrors{
         return this.validator ? this.validator(control) : null;
     }
 

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Optional, Inject, Input, Output, EventEmitter, OnInit, OnDestroy, PLATFORM_ID } from "@angular/core";
+import { Directive, ElementRef, Optional, Inject, Output, EventEmitter, OnInit, OnDestroy, PLATFORM_ID } from "@angular/core";
 import { fromEvent, Subscription } from "rxjs";
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { filter } from "rxjs/operators";
@@ -6,7 +6,7 @@ import { filter } from "rxjs/operators";
 @Directive({
     selector: '[ngezOutsideClick]'
 })
-export class NgEzOutsideDirective implements OnInit, OnDestroy {
+export class NgEzOutsideClickDirective implements OnInit, OnDestroy {
 
     @Output('ngezOutsideClick') outsideClick = new EventEmitter<MouseEvent>();
 

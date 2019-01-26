@@ -2,10 +2,10 @@ import { Component } from "@angular/core";
 import { NgEzCodePrettifyConfig } from "@ngez/core";
 
 @Component({
-    selector: 'outside',
-    templateUrl: './outside.page.html'
+    selector: 'outside-click',
+    templateUrl: './outside-click.page.html'
 })
-export class OutsidePage {
+export class OutsideClickPage {
 
     config1: NgEzCodePrettifyConfig = {
         language: 'html',

@@ -18,6 +18,7 @@ import {
 import { DOCUMENT, isPlatformBrowser } from "@angular/common";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { Subscription, fromEvent } from "rxjs";
+import { NgEzFileBase } from "./file";
 
 @Directive({
     selector: ':not([type="file"])[ngezFileInput]',
@@ -28,9 +29,7 @@ import { Subscription, fromEvent } from "rxjs";
         multi: true
     }]
 })
-export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
-
-    @Input() accept: string;
+export class NgEzFileInputDirective extends NgEzFileBase implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
 
     @Input() set multiple(multiple){
         this._multiple = multiple;
@@ -38,13 +37,13 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
 
     @Output() selected = new EventEmitter<File | File[]>();
 
+    private _multiple: any;
+    
     onChange: Function;
 
     onTouched: Function;
 
     isDisabled = false;
-
-    private _multiple: any;
 
     private fileInput: HTMLInputElement;
 
@@ -56,7 +55,7 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
         private element: ElementRef,
         @Inject(PLATFORM_ID) private platformId: Object,
         @Optional() @Inject(DOCUMENT) private document: any,
-        private renderer: Renderer2) { }
+        private renderer: Renderer2) { super(); }
 
     ngOnChanges(changes: SimpleChanges) {
         if (!isPlatformBrowser(this.platformId)) return;
@@ -115,7 +114,7 @@ export class NgEzFileInputDirective implements ControlValueAccessor, OnChanges, 
                 return console.warn('Expected value of type File, FileList or File[], instead got: ', value);
         }
 
-        this.setValue(value);
+        this.setValue(file);
     }
 
     registerOnChange(fn: (value: any) => {}): void {

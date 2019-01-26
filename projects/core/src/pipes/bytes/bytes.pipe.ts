@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { NgEzByteUnit } from "./models";
-import { NgEzByteUtils } from "../utils/byte";
+import { NgEzByteUnit, NgEzByteUtils } from "../../utils";
 
 @Pipe({
     name: 'ngezBytes'

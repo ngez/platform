@@ -14,8 +14,8 @@ const routes: Routes = [{
     path: 'code-prettify',
     loadChildren: './pages/code-prettify/code-prettify.module#CodePrettifyModule'
 }, {
-    path: 'outside',
-    loadChildren: './pages/outside/outside.module#OutsideModule'
+    path: 'outside-click',
+    loadChildren: './pages/outside-click/outside-click.module#OutsideClickModule'
 }, {
     path: 'clipboard',
     loadChildren: './pages/clipboard/clipboard.module#ClipboardModule'
@@ -31,6 +31,9 @@ const routes: Routes = [{
 }, {
     path: 'forms',
     loadChildren: './pages/forms/forms.module#FormsModule'
+}, {
+    path: 'file-dropzone',
+    loadChildren: './pages/file-dropzone/file-dropzone.module#FileDropzoneModule'
 }];
 
 @NgModule({

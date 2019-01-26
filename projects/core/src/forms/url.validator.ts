@@ -1,5 +1,5 @@
 import { Directive, forwardRef } from "@angular/core";
-import { Validator, AbstractControl, NG_VALIDATORS } from "@angular/forms";
+import { Validator, AbstractControl, NG_VALIDATORS, ValidationErrors } from "@angular/forms";
 import { NgEzValidators } from "./validators";
 
 @Directive({
@@ -12,7 +12,7 @@ import { NgEzValidators } from "./validators";
 })
 export class NgEzUrlValidator implements Validator{
 
-    validate(control: AbstractControl){
+    validate(control: AbstractControl): ValidationErrors{
         return NgEzValidators.url(control);
     }
 }

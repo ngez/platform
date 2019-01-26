@@ -1,4 +1,4 @@
-import { NgEzByteUnit } from "../file/models";
+import { NgEzByteUnit } from "./models";
 
 export class NgEzByteUtils{
 

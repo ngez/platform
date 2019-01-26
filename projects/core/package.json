@@ -1,6 +1,6 @@
 {
   "name": "@ngez/core",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services",
   "keywords": [
     "ngez",
@@ -25,7 +25,9 @@
     "forms",
     "validators",
     "file",
-    "file-input"
+    "file-input",
+    "file-dropzone",
+    "dropzone"
   ],
   "repository": {
     "type": "git",

@@ -1,3 +1,10 @@
+# 2.0.0 (2019-01-26)
+### Features
+* Added **file-dropzone** directive.
+### Breaking Changes
+* **NgEzOutsideDirective** renamed to **NgEzOutsideClickDirective**.
+* **NgEzOutsideModule** renamed to **NgEzOutsideClickModule**.
+
 # 1.2.0 (2019-01-11)
 ### Features
 * Added **file-input** directive.

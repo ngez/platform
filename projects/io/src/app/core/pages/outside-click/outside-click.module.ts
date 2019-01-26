@@ -1,15 +1,14 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { OutsidePage } from "./outside.page";
+import { OutsideClickPage } from "./outside-click.page";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CommonModule } from "@angular/common";
-import { NgEzCodePrettifyModule } from '@ngez/core';
+import { NgEzCodePrettifyModule, NgEzOutsideClickModule } from '@ngez/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NgEzOutsideModule } from '@ngez/core';
 
 const routes : Routes = [{
     path: '',
-    component: OutsidePage
+    component: OutsideClickPage
 }];
 
 @NgModule({
@@ -19,7 +18,7 @@ const routes : Routes = [{
         FlexLayoutModule,
         RouterModule.forChild(routes),
         CommonModule,
-        NgEzOutsideModule],
-    declarations: [OutsidePage]
+        NgEzOutsideClickModule],
+    declarations: [OutsideClickPage]
 })
-export class OutsideModule{}
+export class OutsideClickModule{}

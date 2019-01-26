@@ -7,4 +7,3 @@ export type NgEzByteUnit = 'byte'
     | 'gibibyte'
     | 'terabyte'
     | 'tebibyte';
-
