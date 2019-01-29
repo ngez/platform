@@ -6,6 +6,7 @@ import { CommonModule } from "@angular/common";
 import { NgEzCodePrettifyModule, NgEzFileModule } from '@ngez/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from '@angular/material';
 
 const routes : Routes = [{
     path: '',
@@ -20,6 +21,7 @@ const routes : Routes = [{
         RouterModule.forChild(routes),
         CommonModule,
         NgEzFileModule,
+        MatButtonModule,
         ReactiveFormsModule],
     declarations: [FileDropzonePage]
 })

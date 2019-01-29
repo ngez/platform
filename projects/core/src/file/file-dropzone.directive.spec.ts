@@ -1,6 +1,6 @@
 import { Component, DebugElement } from "@angular/core";
 import { NgEzFileDropzoneDirective } from "./file-dropzone.directive";
-import { TestBed, ComponentFixture } from "@angular/core/testing";
+import { TestBed, ComponentFixture, async } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
 @Component({
@@ -35,18 +35,20 @@ describe('FileDropzoneDirective', () => {
     });
 
     it('should set/remove the active class', () => {
+        const target = {};
         expect(debugElement.classes.active).toBe(false);
-        directive.onDragEnter({});
+        directive.onDragEnter(target);
         fixture.detectChanges();
         expect(debugElement.classes.active).toBe(true);
-        directive.onDragLeave({});
+        directive.onDragLeave(target);
         fixture.detectChanges();
         expect(debugElement.classes.active).toBe(false);
     });
 
     it('should not set the active class while disabled', () => {
+        const target = {};
         directive.setDisabledState(true);
-        directive.onDragEnter({});
+        directive.onDragEnter(target);
         fixture.detectChanges();
         expect(debugElement.classes.active).toBe(false);
     });
@@ -63,14 +65,16 @@ describe('FileDropzoneDirective', () => {
         files.forEach(file => dt.items.add(file));
 
         const event = {
-            dataTransfer: dt
+            dataTransfer: dt,
+            stopPropagation: function(){},
+            preventDefault: function(){}
         };
 
-        directive.onDrop(event)
-            .then(() => {
-                expect(directive.value).toEqual(files);
-                done();
-            })
-            .catch(() => fail());
+        spyOn(directive as any, 'getFilesFromDataTransferItemList').and.returnValue(Promise.resolve(files));
+
+        directive.onDrop(event).then(() => {
+            expect(directive.value).toEqual(files);
+            done();
+        });        
     })
 });

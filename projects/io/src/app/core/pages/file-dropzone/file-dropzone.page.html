@@ -15,18 +15,19 @@
 </p>
 <h2 class="mat-title">Demo</h2>
 <form [formGroup]="form">
-    <div fxLayout="column" fxLayoutAlign="center center" formControlName="files" ngezFileDropzone>
+    <div fxLayout="column" fxLayoutAlign="center center" formControlName="files" ngezFileDropzone (changed)="onSelected($event)">
         <p class="mat-body">
             Drop your files
         </p>
+        <button (click)="onBrowse()" mat-flat-button color="primary">Click to browse your files</button>
     </div>
     <p class="mat-body">
         Dropped files:
     </p>
     <ul>
-        <li *ngFor="let file of form.value.files">
+        <li *ngFor="let file of form.value.files" style="padding: 6px">
             {{file.name}}
-            <button type="button" (click)="onRemove(file)">Remove</button>
+            <button type="button" (click)="onRemove(file)" mat-flat-button color="primary">Remove</button>
         </li>
     </ul>
 </form>

@@ -1,7 +1,10 @@
 <form [formGroup]="form">
-    <div formControlName="files" ngezFileDropzone></div>
+    <!-- We can pass the accepted file types to the file input if we're programatically opening the file browser-->
+    <div formControlName="files" ngezFileDropzone accept=".jpg">
+        <button (click)="onBrowse()">Click to browse your files</button>
+    </div>
     <p class="mat-body">
-        Dropped files:
+        Files:
     </p>
     <ul>
         <li *ngFor="let file of form.value.files">

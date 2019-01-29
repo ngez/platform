@@ -1,3 +1,10 @@
+# 3.0.0 (2019-01-29)
+### Bug Fixes
+* **file-dropzone:** events fired on child elements no longer remove "active" class.
+
+### Breaking Changes
+* **forms:** maxSize and fileType validators now return ValidationError if the value is a File, and ValidationError[] if the value is a FileList or File[].
+
 # 2.0.0 (2019-01-26)
 ### Features
 * Added **file-dropzone** directive.

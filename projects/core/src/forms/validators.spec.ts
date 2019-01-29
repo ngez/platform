@@ -91,6 +91,20 @@ describe('Validators', () => {
             expect(validator(new FormControl([f1, f2, f3]))).toBeTruthy();
         });
 
+        it('should return an error object if provided a File and an array of errors if provided a FileList or File[]', () => {
+            const f1 = new File(["blob"], "song.mp3", { type: 'audio/mp3' });
+            const f2 = new File(["blob"], "99872_n.jpg", { type: 'image/jpeg' });
+            const f3 = new File(["blob"], "asdf.txt", { type: 'text/plain' });
+            const accept = '.jpg, audio/*';
+            const validator = NgEzValidators.fileType(accept);
+
+            expect(validator(new FormControl(f3))).toEqual({ accept, actualFile: f3 });
+            expect(validator(new FormControl([f3]))).toEqual([{ accept, actualFile: f3 }]);
+            expect(validator(new FormControl([f3, f3]))).toEqual([{ accept, actualFile: f3 }, { accept, actualFile: f3 }]);
+            expect(validator(new FormControl([f1, f3]))).toEqual([{ accept, actualFile: f3 }]);
+            expect(validator(new FormControl([f1, f2, f3]))).toEqual([{ accept, actualFile: f3 }]);
+        });
+
         it('should return null if all the file types are valid.', () => {
             const f1 = new File(["blob"], "song.mp3", { type: 'audio/mp3' });
             const f2 = new File(["blob"], "99872_n.jpg", { type: 'image/jpeg' });
@@ -133,6 +147,22 @@ describe('Validators', () => {
             expect(validator(new FormControl([f3, f3]))).toBeTruthy();
             expect(validator(new FormControl([f1, f3]))).toBeTruthy();
             expect(validator(new FormControl([f1, f2, f3]))).toBeTruthy();
+        });
+
+        it('should return an error object if provided a File and an array of errors if provided a FileList or File[]', () => {
+            const f1 = new File([getRandomText(100000)], "file1.txt", { type: 'text/plain' });
+            const f2 = new File([getRandomText(1000001)], "file2.txt", { type: 'text/plain' });
+            const f3 = new File([getRandomText(10000000)], "file3.txt", { type: 'text/plain' });
+
+            const requiredSize = NgEzByteUtils.convert(1, 'megabyte');
+
+            const validator = NgEzValidators.maxSize(requiredSize);
+
+            expect(validator(new FormControl(f3))).toEqual({ requiredSize, actualFile: f3 });
+            expect(validator(new FormControl([f3]))).toEqual([{ requiredSize, actualFile: f3 }]);
+            expect(validator(new FormControl([f3, f3]))).toEqual([{ requiredSize, actualFile: f3 }, { requiredSize, actualFile: f3 }]);
+            expect(validator(new FormControl([f1, f3]))).toEqual([{ requiredSize, actualFile: f3 }]);
+            expect(validator(new FormControl([f1, f2, f3]))).toEqual([{ requiredSize, actualFile: f2 }, { requiredSize, actualFile: f3 }]);
         });
 
         it('should return null if all the file sizes are valid.', () => {

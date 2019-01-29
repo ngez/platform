@@ -1,6 +1,26 @@
-import { Directive, HostListener, HostBinding, forwardRef, Output, EventEmitter } from "@angular/core";
+import { 
+    Directive, 
+    HostListener, 
+    HostBinding, 
+    forwardRef, 
+    Output, 
+    EventEmitter, 
+    Inject, 
+    Optional, 
+    PLATFORM_ID, 
+    Renderer2, 
+    OnChanges, 
+    SimpleChanges,
+    OnInit,
+    OnDestroy,
+    Input,
+    ElementRef} from "@angular/core";
 import { NgEzFileBase } from "./file";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { 
+    NgEzFileDropzoneEvent, 
+    NgEzFileDropzoneEventTypes } from './models';
 
 @Directive({
     selector: '[ngezFileDropzone]',
@@ -11,8 +31,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
         multi: true
     }]
 })
-export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlValueAccessor{
+export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlValueAccessor, OnChanges, OnInit, OnDestroy{
 
+    @Output() changed = new EventEmitter<NgEzFileDropzoneEvent>();
+    
     @HostBinding('class.ngez-file-dropzone') className = true;
 
     @HostBinding('class.active') get isActive(){
@@ -20,10 +42,6 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
     }
 
     @HostBinding('class.disabled') isDisabled = false;
-
-    @Output() dropped = new EventEmitter<File[]>();
-
-    @Output() selected = new EventEmitter<File[]>();
 
     value: File[] = [];
 
@@ -33,16 +51,44 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
 
     private _isActive = false;
 
-    constructor(){ super(); }
+    private target: EventTarget;
 
-    @HostListener('dragenter', ['$event'])
-    onDragEnter(e){
+    constructor(
+        private element: ElementRef,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        @Optional() @Inject(DOCUMENT) private document: any,
+        private renderer: Renderer2){ super(); }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!isPlatformBrowser(this.platformId)) return;
+
+        const { currentValue: accept = null, previousValue: prevAccept = null } = changes.accept || {};
+
+        if (accept != prevAccept)
+            this.appendFileInput();
+    }
+
+    ngOnInit() {
+        if (!isPlatformBrowser(this.platformId)) return;
+
+        if (!this.fileInput)
+            this.appendFileInput();
+    }
+
+    ngOnDestroy() {
+        this.removeFileInput();
+    }
+
+    @HostListener('dragenter', ['$event.target'])
+    onDragEnter(target){
+        this.target = target;
         this._isActive = true;
     }
 
-    @HostListener('dragleave', ['$event'])
-    onDragLeave(e){
-        this._isActive = false;
+    @HostListener('dragleave', ['$event.target'])
+    onDragLeave(target){
+        if(this.target == target)
+            this._isActive = false;
     }
 
     @HostListener('dragover', ['$event'])
@@ -68,15 +114,20 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
                 ? this.getFilesFromDataTransferItemList(items)
                 : Promise.resolve(Array.from(dataTransfer.files)));
 
-            this.setValueAndUpdate(files);
+            this.setValueAndUpdate(files, 'drop');
             
         } catch(e){
             console.error(e);
         }
     }
 
+    browse() {
+        if(this.isDisabled || !this.fileInput) return;
+            
+        this.fileInput.click();
+    }
+
     writeValue(value: any): void {
-        this.value = [];
         let files: File[] = null;
 
         if (value) {
@@ -144,16 +195,56 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
     }
 
     private setValue(files: File[]) {
-        this.value = [...this.value, ...(files ? files : [])];
+        this.value = files ? files : [];
     }
 
-    private setValueAndUpdate(files: File[]) {
+    private setValueAndEmit(files: File[], event: NgEzFileDropzoneEventTypes) {
         this.setValue(files);
+        this.changed.emit(new NgEzFileDropzoneEvent(event, files));
+    }
+
+    private setValueAndUpdate(files: File[], event: NgEzFileDropzoneEventTypes) {
+        this.setValueAndEmit([...this.value, ...(files ? files : [])], event);
+
         if(this.onTouched)
             this.onTouched();
         if(this.onChange)
             this.onChange(this.value);
-        this.dropped.emit(files);
-        this.selected.emit(this.value);
+    }
+
+    private appendFileInput() {
+        if (this.fileInput)
+            this.clear();
+
+        this.removeFileInput();
+
+        this.fileInput = this.createFileInput();
+        this.renderer.appendChild(this.document.body, this.fileInput);
+        this.listener = this.renderer.listen(this.fileInput, 'change', e => {
+            const files: FileList = e.target.files;
+            this.setValueAndUpdate(Array.from(files), 'select');
+        });
+    }
+
+    private createFileInput(): HTMLInputElement {
+        const input = this.renderer.createElement('input');
+        this.renderer.setAttribute(input, 'type', 'file');
+        this.renderer.setAttribute(input, 'aria-hidden', 'true');
+        this.renderer.setProperty(input, 'hidden', true);
+        this.renderer.setProperty(input, 'multiple', true);
+        if (this.accept)
+            this.renderer.setAttribute(input, 'accept', this.accept);
+        return input;
+    }
+
+    private removeFileInput() {
+        if (this.fileInput)
+            this.renderer.removeChild(this.document.body, this.fileInput);
+        if (this.listener)
+            this.listener();
+    }
+
+    private clear() {
+        this.setValue([]);
     }
 }

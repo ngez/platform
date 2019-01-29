@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { NgEzByteUtils, NgEzValidators } from "@ngez/core";
+import { Component, ViewChild } from "@angular/core";
+import { NgEzByteUtils, NgEzValidators, NgEzFileInputDirective } from "@ngez/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
     templateUrl: './app.component.html'
 })
 export class AppComponent {
+
+    @ViewChild(NgEzFileInputDirective) fileInput: NgEzFileInputDirective;
 
     form: FormGroup;
 
@@ -27,4 +29,8 @@ export class AppComponent {
         });
     }
 
+    //Programtically open file browser
+    onBrowse(){
+        this.fileInput.browse();
+    }
 }

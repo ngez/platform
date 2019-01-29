@@ -109,60 +109,65 @@ export class NgEzValidators {
                 return mimeTypes.push(accept);
             });
 
+        const validate = (file: File) => {
+            if (
+                anyImage && this.getMimeTypeRegex(IMAGE_WILDCARD).test(file.type) ||
+                anyAudio && this.getMimeTypeRegex(AUDIO_WILDCARD).test(file.type) ||
+                anyVideo && this.getMimeTypeRegex(VIDEO_WILDCARD).test(file.type) ||
+                mimeTypes.some(type => file.type == type))
+                return null;
+
+            const name = file.name.split('.')
+            const fileExtension = name[name.length - 1];
+
+            if (extensions.some(extension => extension.toLowerCase().includes(fileExtension.toLowerCase())))
+                return null;
+            
+            return {
+                accept,
+                actualFile: file
+            };
+        }
+
         return (control: AbstractControl) => {
             const { value } = control;
 
             if (!value || !(value instanceof File || (Array.isArray(value) && value.every(value => value instanceof File)) || value instanceof FileList))
                 return null;
 
-            const files: File[] = value instanceof FileList
-                ? Array.from(value)
-                : Array.isArray(value)
-                    ? value
-                    : [value];
+            if(value instanceof File)
+                return validate(value);
+            
+            const files: File[] = value instanceof FileList ? Array.from(value) : value;
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (anyImage && this.getMimeTypeRegex(IMAGE_WILDCARD).test(file.type))
-                    continue;
-                if (anyAudio && this.getMimeTypeRegex(AUDIO_WILDCARD).test(file.type))
-                    continue;
-                if (anyVideo && this.getMimeTypeRegex(VIDEO_WILDCARD).test(file.type))
-                    continue;
-                if (mimeTypes.some(type => file.type == type))
-                    continue;
-                const name = file.name.split('.')
-                const fileExtension = name[name.length - 1];
-                if (extensions.some(extension => extension.toLowerCase().includes(fileExtension.toLowerCase())))
-                    continue;
-                return {
-                    fileType: {
-                        accept,
-                        name: file.name,
-                        actualType: file.type,
-                        actualExtension: fileExtension
-                    }
-                };
-            }
+            const errors = files.map(file => validate(file)).filter(file => file);
 
-            return null;
+            return errors.length ? errors : null;
         }
     }
 
     static maxSize(bytes: number) {
+
+        const validate = (file: File) => {
+            return file.size > bytes 
+                ? { requiredSize: bytes, actualFile: file }
+                : null; 
+        };
+
         return (control: AbstractControl) => {
             const { value } = control;
 
             if (!value || !bytes || !(value instanceof File || (Array.isArray(value) && value.every(value => value instanceof File)) || value instanceof FileList))
                 return null;
 
-            const files: File[] = value instanceof FileList
-                ? Array.from(value)
-                : Array.isArray(value)
-                    ? value
-                    : [value];
+            if(value instanceof File)
+                return validate(value);
 
-            return this.everyFileSizeIsValid(bytes, files);
+            const files = value instanceof FileList ? Array.from(value) : value;
+
+            const errors = files.map(file => validate(file)).filter(file => file);
+
+            return errors.length ? errors : null;
         }
     }
 
@@ -190,22 +195,6 @@ export class NgEzValidators {
                     }
                 };
         }
-    }
-
-    private static everyFileSizeIsValid(bytes: number, files: File[]) {
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (file.size > bytes)
-                return {
-                    fileSize: {
-                        name: file.name,
-                        requiredSize: bytes,
-                        actualSize: file.size
-                    }
-                };
-        }
-
-        return null;
     }
 
     private static getMimeTypeRegex(str: string, ) {

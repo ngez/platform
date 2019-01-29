@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { NgEzCodePrettifyConfig } from "@ngez/core";
+import { Component, ViewChild } from "@angular/core";
+import { NgEzCodePrettifyConfig, NgEzFileDropzoneDirective, NgEzFileDropzoneEvent } from "@ngez/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
@@ -8,6 +8,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
     styleUrls: ['./file-dropzone.page.scss']
 })
 export class FileDropzonePage{
+
+    @ViewChild(NgEzFileDropzoneDirective) dropzone: NgEzFileDropzoneDirective;
 
     form: FormGroup;
 
@@ -44,5 +46,13 @@ export class FileDropzonePage{
     onRemove(file: File){
         const control = this.form.get('files');
         control.setValue((control.value as File[]).filter(f => file != f))
+    }
+
+    onBrowse(){
+        this.dropzone.browse();
+    }
+
+    onSelected(selection: NgEzFileDropzoneEvent){
+        console.log(selection)
     }
 }

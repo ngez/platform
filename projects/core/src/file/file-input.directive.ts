@@ -45,10 +45,6 @@ export class NgEzFileInputDirective extends NgEzFileBase implements ControlValue
 
     isDisabled = false;
 
-    private fileInput: HTMLInputElement;
-
-    private listener: Function;
-
     private subscription: Subscription;
 
     constructor(
@@ -74,7 +70,7 @@ export class NgEzFileInputDirective extends NgEzFileBase implements ControlValue
             this.appendFileInput();
 
         this.subscription = fromEvent(this.element.nativeElement, this.isInputOrTextarea() ? 'focus' : 'click')
-            .subscribe(e => this.open());
+            .subscribe(e => this.browse());
     }
 
     ngOnDestroy() {
@@ -89,7 +85,7 @@ export class NgEzFileInputDirective extends NgEzFileBase implements ControlValue
             this.onTouched();
     }
 
-    open() {
+    browse() {
         if(this.isDisabled) return;
 
         if (this.isInputOrTextarea())
