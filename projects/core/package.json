@@ -1,6 +1,6 @@
 {
   "name": "@ngez/core",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A collection of minimalistic, easy-to-use and fully customizable Angular components, directives and services",
   "keywords": [
     "ngez",

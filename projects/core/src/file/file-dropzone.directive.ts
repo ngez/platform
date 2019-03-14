@@ -1,26 +1,26 @@
-import { 
-    Directive, 
-    HostListener, 
-    HostBinding, 
-    forwardRef, 
-    Output, 
-    EventEmitter, 
-    Inject, 
-    Optional, 
-    PLATFORM_ID, 
-    Renderer2, 
-    OnChanges, 
-    SimpleChanges,
-    OnInit,
-    OnDestroy,
-    Input,
-    ElementRef} from "@angular/core";
-import { NgEzFileBase } from "./file";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { 
-    NgEzFileDropzoneEvent, 
-    NgEzFileDropzoneEventTypes } from './models';
+import {
+    Directive,
+    ElementRef,
+    EventEmitter,
+    forwardRef,
+    HostBinding,
+    HostListener,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Optional,
+    Output,
+    PLATFORM_ID,
+    Renderer2,
+    SimpleChanges,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+import { NgEzFileBase } from './file';
+import { NgEzFileDropzoneEvent, NgEzFileDropzoneEventTypes } from './models';
 
 @Directive({
     selector: '[ngezFileDropzone]',
@@ -43,7 +43,7 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
 
     @HostBinding('class.disabled') isDisabled = false;
 
-    value: File[] = [];
+    value: File | File[] = null;
 
     onChange: Function;
 
@@ -141,7 +141,7 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
                 return console.warn('Expected value of type File, FileList or File[], instead got: ', value);
         }
 
-        this.setValue(files);
+        this.value = files;
     }
 
     registerOnChange(fn: (value: any) => {}): void {
@@ -195,16 +195,21 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
     }
 
     private setValue(files: File[]) {
-        this.value = files ? files : [];
+        if(this.multiple){
+            const value = Array.isArray(this.value) ? this.value : [];
+            this.value = [...value, ...files];
+        } 
+        else
+            this.value = Array.isArray(files) ? files[0] : null;
     }
 
     private setValueAndEmit(files: File[], event: NgEzFileDropzoneEventTypes) {
         this.setValue(files);
-        this.changed.emit(new NgEzFileDropzoneEvent(event, files));
+        this.changed.emit(new NgEzFileDropzoneEvent(event, this.value));
     }
 
     private setValueAndUpdate(files: File[], event: NgEzFileDropzoneEventTypes) {
-        this.setValueAndEmit([...this.value, ...(files ? files : [])], event);
+        this.setValueAndEmit(files, event);
 
         if(this.onTouched)
             this.onTouched();
@@ -231,7 +236,7 @@ export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlVa
         this.renderer.setAttribute(input, 'type', 'file');
         this.renderer.setAttribute(input, 'aria-hidden', 'true');
         this.renderer.setProperty(input, 'hidden', true);
-        this.renderer.setProperty(input, 'multiple', true);
+        this.renderer.setProperty(input, 'multiple', this.multiple ? true : false);
         if (this.accept)
             this.renderer.setAttribute(input, 'accept', this.accept);
         return input;

@@ -1,7 +1,8 @@
-import { Component, DebugElement } from "@angular/core";
-import { NgEzFileDropzoneDirective } from "./file-dropzone.directive";
-import { TestBed, ComponentFixture, async } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
+import { Component, DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
+import { NgEzFileDropzoneDirective } from './file-dropzone.directive';
 
 @Component({
     selector: 'test',
@@ -54,6 +55,9 @@ describe('FileDropzoneDirective', () => {
     });
 
     it('should set the dropped files as the value', (done) => {
+
+        directive.multiple = true;
+
         const dt = new DataTransfer();
 
         const files = [
@@ -70,10 +74,42 @@ describe('FileDropzoneDirective', () => {
             preventDefault: function(){}
         };
 
+        
+
         spyOn(directive as any, 'getFilesFromDataTransferItemList').and.returnValue(Promise.resolve(files));
 
         directive.onDrop(event).then(() => {
             expect(directive.value).toEqual(files);
+            done();
+        });        
+    });
+
+    it('should set the first file as the value', (done) => {
+
+        directive.multiple = false;
+
+        const dt = new DataTransfer();
+
+        const files = [
+            new File(["blob"], "song.mp3", { type: 'audio/mp3' }),
+            new File(["blob"], "99872_n.jpg", { type: 'image/jpeg' }),
+            new File(["blob"], "asdf.txt", { type: 'text/plain' })
+        ];
+
+        files.forEach(file => dt.items.add(file));
+
+        const event = {
+            dataTransfer: dt,
+            stopPropagation: function(){},
+            preventDefault: function(){}
+        };
+
+        
+
+        spyOn(directive as any, 'getFilesFromDataTransferItemList').and.returnValue(Promise.resolve(files));
+
+        directive.onDrop(event).then(() => {
+            expect(directive.value).toEqual(files[0]);
             done();
         });        
     })

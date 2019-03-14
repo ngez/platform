@@ -1,5 +1,5 @@
 export class NgEzFileDropzoneEvent{
-    constructor(private event:NgEzFileDropzoneEventTypes, private files: File[]){}
+    constructor(public event:NgEzFileDropzoneEventTypes, public value: File | File[]){}
 }
 
 export type NgEzFileDropzoneEventTypes = 'drop' | 'select';

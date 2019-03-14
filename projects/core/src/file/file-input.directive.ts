@@ -1,24 +1,25 @@
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
     Directive,
     ElementRef,
-    OnInit,
-    Renderer2,
-    Optional,
-    Inject,
-    PLATFORM_ID,
-    OnDestroy,
-    HostListener,
-    Input,
-    forwardRef,
-    Output,
     EventEmitter,
+    forwardRef,
+    HostListener,
+    Inject,
+    Input,
     OnChanges,
-    SimpleChanges
-} from "@angular/core";
-import { DOCUMENT, isPlatformBrowser } from "@angular/common";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { Subscription, fromEvent } from "rxjs";
-import { NgEzFileBase } from "./file";
+    OnDestroy,
+    OnInit,
+    Optional,
+    Output,
+    PLATFORM_ID,
+    Renderer2,
+    SimpleChanges,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { fromEvent, Subscription } from 'rxjs';
+
+import { NgEzFileBase } from './file';
 
 @Directive({
     selector: ':not([type="file"])[ngezFileInput]',
@@ -31,13 +32,7 @@ import { NgEzFileBase } from "./file";
 })
 export class NgEzFileInputDirective extends NgEzFileBase implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
 
-    @Input() set multiple(multiple){
-        this._multiple = multiple;
-    };
-
     @Output() selected = new EventEmitter<File | File[]>();
-
-    private _multiple: any;
     
     onChange: Function;
 
@@ -180,10 +175,5 @@ export class NgEzFileInputDirective extends NgEzFileBase implements ControlValue
     private isInputOrTextarea(): boolean {
         const element = this.element.nativeElement;
         return element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement;
-    }
-
-    get multiple(){
-        const multiple = this._multiple;
-        return multiple || multiple === '' ? true : false;
     }
 }
