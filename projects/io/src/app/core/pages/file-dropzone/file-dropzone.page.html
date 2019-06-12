@@ -1,79 +1,103 @@
 <h1 class="mat-headline">File Dropzone</h1>
 <p class="mat-body">
-    Turn any element into a file dropzone and you decide how you want to render the files. The control's value will be the File[].
+  Turn any element into a file dropzone and you decide how you want to render
+  the files. The control's value will be the File[].
 </p>
 <h2 class="mat-title">Features</h2>
 <ul>
-    <li>Works with FormsModule and ReactiveFormsModule.</li>
-    <li>Dropping a folder will extract the files.</li>
-    <li>Easily style the dropzone while dropping files.</li>
+  <li>Works with FormsModule and ReactiveFormsModule.</li>
+  <li>Dropping a folder will extract the files.</li>
+  <li>Easily style the dropzone while dropping files.</li>
 </ul>
 <h2 class="mat-title">Caveat</h2>
 <p class="mat-body">
-    Internet Explorer doesn't allow dropping folders or extracting the files from a folder, so if the dropped files contain at
-    least one folder, it'll return an empty array. Works as expected on Edge.
+  Internet Explorer doesn't allow dropping folders or extracting the files from
+  a folder, so if the dropped files contain at least one folder, it'll return an
+  empty array. Works as expected on Edge.
 </p>
 <h2 class="mat-title">Demo</h2>
 <form [formGroup]="form">
-    <div fxLayout="column" fxLayoutAlign="center center" formControlName="files" ngezFileDropzone (changed)="onSelected($event)">
-        <p class="mat-body">
-            Drop your files
-        </p>
-        <button (click)="onBrowse()" mat-flat-button color="primary">Click to browse your files</button>
-    </div>
+  <button (click)="onReset()" mat-flat-button color="warn">Reset</button>
+  <div
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    formControlName="files"
+    ngezFileDropzone
+    multiple
+  >
     <p class="mat-body">
-        Dropped files:
+      Drop your files
     </p>
-    <ul>
-        <li *ngFor="let file of form.value.files" style="padding: 6px">
-            {{file.name}}
-            <button type="button" (click)="onRemove(file)" mat-flat-button color="primary">Remove</button>
-        </li>
-    </ul>
+    <button (click)="onBrowse()" mat-flat-button color="primary">
+      Click to browse your files
+    </button>
+  </div>
+  <p class="mat-body">
+    Dropped files:
+  </p>
+  <ul>
+    <li *ngFor="let file of form.value.files" style="padding: 6px">
+      {{ file.name }}
+      <button
+        type="button"
+        (click)="onRemove(file)"
+        mat-flat-button
+        color="primary"
+      >
+        Remove
+      </button>
+    </li>
+  </ul>
 </form>
 <h2 class="mat-title">Import</h2>
 <pre>
-    import {{'{'}} NgEzFileModule {{'}'}} from '@ngez/core';
+    import {{ "{" }} NgEzFileModule {{ "}" }} from '@ngez/core';
 </pre>
 <h2 class="mat-title">Usage</h2>
 <ngez-code-prettify [config]="code1">
-    <ngez-code-loading>
-        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
-            <mat-spinner color="accent" diameter="50"></mat-spinner>
-        </div>
-    </ngez-code-loading>
-    <ngez-code-loading-error>
-        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
-            <span style="color: white">Something went wrong while loading the code.</span>
-            <button ngezReload>Reload</button>
-        </div>
-    </ngez-code-loading-error>
+  <ngez-code-loading>
+    <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner color="accent" diameter="50"></mat-spinner>
+    </div>
+  </ngez-code-loading>
+  <ngez-code-loading-error>
+    <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+      <span style="color: white"
+        >Something went wrong while loading the code.</span
+      >
+      <button ngezReload>Reload</button>
+    </div>
+  </ngez-code-loading-error>
 </ngez-code-prettify>
-<br>
+<br />
 <ngez-code-prettify [config]="code2">
-    <ngez-code-loading>
-        <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
-            <mat-spinner color="accent" diameter="50"></mat-spinner>
-        </div>
-    </ngez-code-loading>
-    <ngez-code-loading-error>
-        <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
-            <span style="color: white">Something went wrong while loading the code.</span>
-            <button ngezReload>Reload</button>
-        </div>
-    </ngez-code-loading-error>
+  <ngez-code-loading>
+    <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner color="accent" diameter="50"></mat-spinner>
+    </div>
+  </ngez-code-loading>
+  <ngez-code-loading-error>
+    <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+      <span style="color: white"
+        >Something went wrong while loading the code.</span
+      >
+      <button ngezReload>Reload</button>
+    </div>
+  </ngez-code-loading-error>
 </ngez-code-prettify>
-<br>
+<br />
 <ngez-code-prettify [config]="code3">
-        <ngez-code-loading>
-            <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
-                <mat-spinner color="accent" diameter="50"></mat-spinner>
-            </div>
-        </ngez-code-loading>
-        <ngez-code-loading-error>
-            <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
-                <span style="color: white">Something went wrong while loading the code.</span>
-                <button ngezReload>Reload</button>
-            </div>
-        </ngez-code-loading-error>
-    </ngez-code-prettify>
+  <ngez-code-loading>
+    <div style="padding: 24px;" fxLayout="row" fxLayoutAlign="center center">
+      <mat-spinner color="accent" diameter="50"></mat-spinner>
+    </div>
+  </ngez-code-loading>
+  <ngez-code-loading-error>
+    <div style="padding: 24px;" fxLayout="column" fxLayoutAlign="center center">
+      <span style="color: white"
+        >Something went wrong while loading the code.</span
+      >
+      <button ngezReload>Reload</button>
+    </div>
+  </ngez-code-loading-error>
+</ngez-code-prettify>

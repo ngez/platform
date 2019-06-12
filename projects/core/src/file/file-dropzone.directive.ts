@@ -23,233 +23,234 @@ import { NgEzFileBase } from './file';
 import { NgEzFileDropzoneEvent, NgEzFileDropzoneEventTypes } from './models';
 
 @Directive({
-    selector: '[ngezFileDropzone]',
-    exportAs: 'ngezFileDropzone',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => NgEzFileDropzoneDirective),
-        multi: true
-    }]
+  selector: "[ngezFileDropzone]",
+  exportAs: "ngezFileDropzone",
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NgEzFileDropzoneDirective),
+      multi: true
+    }
+  ]
 })
-export class NgEzFileDropzoneDirective extends NgEzFileBase implements ControlValueAccessor, OnChanges, OnInit, OnDestroy{
+export class NgEzFileDropzoneDirective extends NgEzFileBase
+  implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
+  @Output() changed = new EventEmitter<NgEzFileDropzoneEvent>();
 
-    @Output() changed = new EventEmitter<NgEzFileDropzoneEvent>();
-    
-    @HostBinding('class.ngez-file-dropzone') className = true;
+  @HostBinding("class.ngez-file-dropzone") className = true;
 
-    @HostBinding('class.active') get isActive(){
-        return this._isActive && !this.isDisabled;
+  @HostBinding("class.active") get isActive() {
+    return this._isActive && !this.isDisabled;
+  }
+
+  @HostBinding("class.disabled") isDisabled = false;
+
+  value: File | File[] = null;
+
+  onChange: Function;
+
+  onTouched: Function;
+
+  private _isActive = false;
+
+  private target: EventTarget;
+
+  constructor(
+    private element: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Optional() @Inject(DOCUMENT) private document: any,
+    private renderer: Renderer2
+  ) {
+    super();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const { currentValue: accept = null, previousValue: prevAccept = null } =
+      changes.accept || {};
+
+    if (accept != prevAccept) this.appendFileInput();
+  }
+
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    if (!this.fileInput) this.appendFileInput();
+  }
+
+  ngOnDestroy() {
+    this.removeFileInput();
+  }
+
+  @HostListener("dragenter", ["$event.target"])
+  onDragEnter(target) {
+    this.target = target;
+    this._isActive = true;
+  }
+
+  @HostListener("dragleave", ["$event.target"])
+  onDragLeave(target) {
+    if (this.target == target) this._isActive = false;
+  }
+
+  @HostListener("dragover", ["$event"])
+  onDragOver(e) {
+    // e.stopPropagation();
+    e.preventDefault();
+  }
+
+  @HostListener("drop", ["$event"])
+  async onDrop(e: any) {
+    // e.stopPropagation();
+    e.preventDefault();
+    this._isActive = false;
+
+    if (this.isDisabled) return;
+
+    const dataTransfer: DataTransfer = e.dataTransfer;
+    const items = dataTransfer.items;
+
+    try {
+      const files = await (items
+        ? this.getFilesFromDataTransferItemList(items)
+        : Promise.resolve(Array.from(dataTransfer.files)));
+
+      this.setValueAndUpdate(files, "drop");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  browse() {
+    if (this.isDisabled || !this.fileInput) return;
+
+    this.fileInput.click();
+  }
+
+  writeValue(value: any): void {
+    let files: File[] = null;
+
+    if (value) {
+      if (value instanceof File) files = [value];
+      else if (
+        Array.isArray(value) &&
+        value.every(value => value instanceof File)
+      )
+        files = value;
+      else if (value instanceof FileList) files = Array.from(value);
+      else
+        return console.warn(
+          "Expected value of type File, FileList or File[], instead got: ",
+          value
+        );
     }
 
-    @HostBinding('class.disabled') isDisabled = false;
+    this.value = files;
+  }
 
-    value: File | File[] = null;
+  registerOnChange(fn: (value: any) => {}): void {
+    this.onChange = fn;
+  }
 
-    onChange: Function;
+  registerOnTouched(fn: () => {}) {
+    this.onTouched = fn;
+  }
 
-    onTouched: Function;
+  setDisabledState(isDisabled: boolean) {
+    this.isDisabled = isDisabled;
+  }
 
-    private _isActive = false;
+  private async getFilesFromDataTransferItemList(
+    dataTransferItemList: DataTransferItemList
+  ): Promise<File[]> {
+    const items = Array.from(dataTransferItemList);
 
-    private target: EventTarget;
+    const promises = items.map(item => {
+      const entry = item.webkitGetAsEntry();
+      return entry ? this.getAllFiles(entry) : [item.getAsFile()];
+    });
 
-    constructor(
-        private element: ElementRef,
-        @Inject(PLATFORM_ID) private platformId: Object,
-        @Optional() @Inject(DOCUMENT) private document: any,
-        private renderer: Renderer2){ super(); }
+    const files = await Promise.all(promises);
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (!isPlatformBrowser(this.platformId)) return;
+    return files.reduce((acc, files) => [...acc, ...files], []);
+  }
 
-        const { currentValue: accept = null, previousValue: prevAccept = null } = changes.accept || {};
+  private async getAllFiles(entry) {
+    if (entry.isFile) return [await this.getFileFromEntry(entry)];
 
-        if (accept != prevAccept)
-            this.appendFileInput();
+    if (entry.isDirectory) {
+      const entries = await this.readAllDirectoryEntries(entry.createReader());
+
+      return entries.reduce(async (acc: Promise<File[]>, entry) => {
+        const files = await acc;
+
+        return [...files, ...(await this.getAllFiles(entry))];
+      }, Promise.resolve([]));
     }
 
-    ngOnInit() {
-        if (!isPlatformBrowser(this.platformId)) return;
+    return [];
+  }
 
-        if (!this.fileInput)
-            this.appendFileInput();
-    }
+  private getFileFromEntry(entry): Promise<File> {
+    return new Promise((resolve, reject) => entry.file(resolve, reject));
+  }
 
-    ngOnDestroy() {
-        this.removeFileInput();
-    }
+  private readAllDirectoryEntries(directoryReader): Promise<any[]> {
+    return new Promise((resolve, reject) =>
+      directoryReader.readEntries(resolve, reject)
+    );
+  }
 
-    @HostListener('dragenter', ['$event.target'])
-    onDragEnter(target){
-        this.target = target;
-        this._isActive = true;
-    }
+  private setValue(files: File[]) {
+    if (this.multiple) {
+      const value = Array.isArray(this.value) ? this.value : [];
+      this.value = [...value, ...files];
+    } else this.value = Array.isArray(files) ? files[0] : null;
+  }
 
-    @HostListener('dragleave', ['$event.target'])
-    onDragLeave(target){
-        if(this.target == target)
-            this._isActive = false;
-    }
+  private setValueAndEmit(files: File[], event: NgEzFileDropzoneEventTypes) {
+    this.setValue(files);
+    this.changed.emit(new NgEzFileDropzoneEvent(event, this.value));
+  }
 
-    @HostListener('dragover', ['$event'])
-    onDragOver(e){
-        e.stopPropagation();
-        e.preventDefault();
-    }
+  private setValueAndUpdate(files: File[], event: NgEzFileDropzoneEventTypes) {
+    this.setValueAndEmit(files, event);
 
-    @HostListener('drop', ['$event'])
-    async onDrop(e: any){
-        e.stopPropagation();
-        e.preventDefault();
-        this._isActive = false;
+    if (this.onTouched) this.onTouched();
+    if (this.onChange) this.onChange(this.value);
+  }
 
-        if(this.isDisabled)
-            return;
+  private appendFileInput() {
+    if (this.fileInput) this.clear();
 
-        const dataTransfer: DataTransfer = e.dataTransfer;
-        const items = dataTransfer.items;
-        
-        try{
-            const files = await (items
-                ? this.getFilesFromDataTransferItemList(items)
-                : Promise.resolve(Array.from(dataTransfer.files)));
+    this.removeFileInput();
 
-            this.setValueAndUpdate(files, 'drop');
-            
-        } catch(e){
-            console.error(e);
-        }
-    }
+    this.fileInput = this.createFileInput();
+    this.renderer.appendChild(this.document.body, this.fileInput);
+    this.listener = this.renderer.listen(this.fileInput, "change", e => {
+      const files: FileList = e.target.files;
+      this.setValueAndUpdate(Array.from(files), "select");
+    });
+  }
 
-    browse() {
-        if(this.isDisabled || !this.fileInput) return;
-            
-        this.fileInput.click();
-    }
+  private createFileInput(): HTMLInputElement {
+    const input = this.renderer.createElement("input");
+    this.renderer.setAttribute(input, "type", "file");
+    this.renderer.setAttribute(input, "aria-hidden", "true");
+    this.renderer.setProperty(input, "hidden", true);
+    this.renderer.setProperty(input, "multiple", this.multiple ? true : false);
+    if (this.accept) this.renderer.setAttribute(input, "accept", this.accept);
+    return input;
+  }
 
-    writeValue(value: any): void {
-        let files: File[] = null;
+  private removeFileInput() {
+    if (this.fileInput)
+      this.renderer.removeChild(this.document.body, this.fileInput);
+    if (this.listener) this.listener();
+  }
 
-        if (value) {
-            if(value instanceof File)
-                files = [value];
-            else if (Array.isArray(value) && value.every(value => value instanceof File))
-                files = value;
-            else if (value instanceof FileList)
-                files = Array.from(value);
-            else
-                return console.warn('Expected value of type File, FileList or File[], instead got: ', value);
-        }
-
-        this.value = files;
-    }
-
-    registerOnChange(fn: (value: any) => {}): void {
-        this.onChange = fn;
-    }
-
-    registerOnTouched(fn: () => {}) {
-        this.onTouched = fn;
-    }
-
-    setDisabledState(isDisabled: boolean) {
-        this.isDisabled = isDisabled;
-    }
-
-    private async getFilesFromDataTransferItemList(dataTransferItemList: DataTransferItemList): Promise<File[]>{
-        const items = Array.from(dataTransferItemList);
-        
-        const promises = items.map(item => {
-            const entry = item.webkitGetAsEntry();
-            return entry ? this.getAllFiles(entry) : [item.getAsFile()];
-        });
-
-        const files = await Promise.all(promises);
-        
-        return files.reduce((acc, files) => [...acc, ...files], []);      
-    }
-
-    private async getAllFiles(entry) {
-        if(entry.isFile)
-            return [await this.getFileFromEntry(entry)];
-
-        if(entry.isDirectory){
-            const entries = await this.readAllDirectoryEntries(entry.createReader());
-
-            return entries.reduce(async (acc:  Promise<File[]>, entry) => {
-                const files = await acc;
-
-                return [...files, ... (await this.getAllFiles(entry))];
-            }, Promise.resolve([]));
-        }
-
-        return [];   
-    }
-
-    private getFileFromEntry(entry) : Promise<File>{
-        return new Promise((resolve, reject) => entry.file(resolve, reject));
-    }
-
-    private readAllDirectoryEntries(directoryReader): Promise<any[]>{
-        return new Promise((resolve, reject) => directoryReader.readEntries(resolve, reject));
-    }
-
-    private setValue(files: File[]) {
-        if(this.multiple){
-            const value = Array.isArray(this.value) ? this.value : [];
-            this.value = [...value, ...files];
-        } 
-        else
-            this.value = Array.isArray(files) ? files[0] : null;
-    }
-
-    private setValueAndEmit(files: File[], event: NgEzFileDropzoneEventTypes) {
-        this.setValue(files);
-        this.changed.emit(new NgEzFileDropzoneEvent(event, this.value));
-    }
-
-    private setValueAndUpdate(files: File[], event: NgEzFileDropzoneEventTypes) {
-        this.setValueAndEmit(files, event);
-
-        if(this.onTouched)
-            this.onTouched();
-        if(this.onChange)
-            this.onChange(this.value);
-    }
-
-    private appendFileInput() {
-        if (this.fileInput)
-            this.clear();
-
-        this.removeFileInput();
-
-        this.fileInput = this.createFileInput();
-        this.renderer.appendChild(this.document.body, this.fileInput);
-        this.listener = this.renderer.listen(this.fileInput, 'change', e => {
-            const files: FileList = e.target.files;
-            this.setValueAndUpdate(Array.from(files), 'select');
-        });
-    }
-
-    private createFileInput(): HTMLInputElement {
-        const input = this.renderer.createElement('input');
-        this.renderer.setAttribute(input, 'type', 'file');
-        this.renderer.setAttribute(input, 'aria-hidden', 'true');
-        this.renderer.setProperty(input, 'hidden', true);
-        this.renderer.setProperty(input, 'multiple', this.multiple ? true : false);
-        if (this.accept)
-            this.renderer.setAttribute(input, 'accept', this.accept);
-        return input;
-    }
-
-    private removeFileInput() {
-        if (this.fileInput)
-            this.renderer.removeChild(this.document.body, this.fileInput);
-        if (this.listener)
-            this.listener();
-    }
-
-    private clear() {
-        this.setValue([]);
-    }
+  private clear() {
+    this.setValue([]);
+  }
 }
