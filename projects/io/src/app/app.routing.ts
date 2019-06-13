@@ -7,7 +7,7 @@ const routes: Routes = [{
     redirectTo: 'core'
 }, {
     path: 'core',
-    loadChildren: './core/core.routing#CoreRoutingModule'
+    loadChildren: () => import('./core/core.routing').then(m => m.CoreRoutingModule)
 }];
 
 @NgModule({
